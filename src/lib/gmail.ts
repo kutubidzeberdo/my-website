@@ -1,0 +1,14 @@
+import {contact} from '@/data/contact';
+import type {ContactFields} from './contact-validation';
+export class GmailError extends Error{constructor(public kind:'authorization'|'quota'|'delivery'){super(kind);}}
+export function gmailConfigured(){return Boolean(process.env.GOOGLE_CLIENT_ID&&process.env.GOOGLE_CLIENT_SECRET&&process.env.GOOGLE_REFRESH_TOKEN&&process.env.CONTACT_FROM_EMAIL===contact.email&&process.env.CONTACT_TO_EMAIL===contact.email);}
+function subjectWords(value:string){const words:string[]=[];let chunk='';for(const character of value){if(Buffer.byteLength(chunk+character,'utf8')>42){words.push(chunk);chunk='';}chunk+=character;}if(chunk)words.push(chunk);return words.map(word=>`=?UTF-8?B?${Buffer.from(word).toString('base64')}?=`).join('\r\n ');}
+const encode=(value:string)=>Buffer.from(value,'utf8').toString('base64');
+export function buildMime(data:ContactFields){const subject=`ვებგვერდის საკონტაქტო მოთხოვნა: ${data.subject}`;const body=`სახელი და გვარი: ${data.name}\nელფოსტა: ${data.email}\nტელეფონი: ${data.phone||'—'}\nთემა: ${data.subject}\n\n${data.message}\n\nთანხმობა საკონტაქტო მონაცემების დამუშავებაზე: დიახ`;return [`From: ${contact.email}`,`To: ${contact.email}`,`Reply-To: ${data.email}`,`Subject: ${subjectWords(subject)}`,'MIME-Version: 1.0','Content-Type: text/plain; charset=UTF-8','Content-Transfer-Encoding: base64','',''+encode(body).match(/.{1,76}/g)!.join('\r\n')].join('\r\n');}
+export async function sendGmail(data:ContactFields){
+ const tokenResponse=await fetch('https://oauth2.googleapis.com/token',{method:'POST',signal:AbortSignal.timeout(10000),headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({client_id:process.env.GOOGLE_CLIENT_ID!,client_secret:process.env.GOOGLE_CLIENT_SECRET!,refresh_token:process.env.GOOGLE_REFRESH_TOKEN!,grant_type:'refresh_token'})});
+ const token=await tokenResponse.json();if(tokenResponse.status===429)throw new GmailError('quota');if(!tokenResponse.ok||typeof token.access_token!=='string')throw new GmailError('authorization');
+ const response=await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send',{method:'POST',signal:AbortSignal.timeout(10000),headers:{Authorization:`Bearer ${token.access_token}`,'Content-Type':'application/json'},body:JSON.stringify({raw:Buffer.from(buildMime(data)).toString('base64url')})});
+ const result=await response.json();if(response.status===429||result.error?.errors?.some((e:{reason?:string})=>['rateLimitExceeded','userRateLimitExceeded','dailyLimitExceeded'].includes(e.reason||'')))throw new GmailError('quota');
+ if(!response.ok||typeof result.id!=='string'||!result.id)throw new GmailError('delivery');return result.id as string;
+}

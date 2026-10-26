@@ -1,0 +1,19 @@
+node_modules/
+.next/
+out/
+.env*
+!.env.example
+*.tsbuildinfo
+.DS_Store
+
+# Local secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Generated dependencies and builds
+node_modules/
+.next/
+out/
