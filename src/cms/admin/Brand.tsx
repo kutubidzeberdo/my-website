@@ -1,0 +1,2 @@
+export function Brand(){return <div className="pmc-brand"><img src="/images/company-logo.png" alt="აჭარის პროექტების მართვის კომპანია" width="70" height="75"/><div><strong>აჭარის პროექტების<br/>მართვის კომპანია</strong><span>ადმინისტრაციული პანელი</span></div></div>;}
+export function BrandIcon(){return <img className="pmc-brand-icon" src="/images/company-logo.png" alt="PMC" width="30" height="32"/>;}

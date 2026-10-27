@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { previewNotice } from '@/data/ui';
-export function PreviewNotice(){return <p className="development-notice wrap" lang="ka">{previewNotice}</p>;}
+import {useCMS} from './CMSContext';
+export function PreviewNotice(){const {previewNotice}=useCMS();return <p className="development-notice wrap" lang="ka">{previewNotice}</p>;}
 export function ScrollToTop(){
  const [visible,setVisible]=useState(false);
  useEffect(()=>{const update=()=>setVisible(window.scrollY>300);update();window.addEventListener('scroll',update,{passive:true});return()=>window.removeEventListener('scroll',update);},[]);

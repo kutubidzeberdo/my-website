@@ -1,0 +1,18 @@
+/* Scoped to the native Payload toaster; public styles do not load this file. */
+.payload-toast-container .payload-toast-item {
+ border-radius:12px; box-shadow:0 8px 32px rgb(0 0 0 / 14%); padding:16px 42px 16px 16px; line-height:1.6;
+}
+.payload-toast-container .toast-icon {flex-shrink:0;}
+.payload-toast-container .toast-icon svg {width:28px;height:28px;animation:pmc-status-in .32s ease-out;}
+.payload-toast-container .toast-success .toast-icon path[stroke],
+.payload-toast-container .toast-error .toast-icon path[stroke] {stroke-dasharray:30;stroke-dashoffset:0;animation:pmc-status-draw .45s ease-out;}
+@keyframes pmc-status-in {from{transform:scale(.75);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes pmc-status-draw {from{stroke-dashoffset:30}to{stroke-dashoffset:0}}
+@media(max-width:600px){.payload-toast-container{max-width:calc(100vw - 24px)}.payload-toast-container .payload-toast-item{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.payload-toast-container *{animation:none!important;transition:none!important}}
+.payload-toast-container .toast-success {color:#14532d;background:#f0fdf4;border:1px solid #86efac;}
+.payload-toast-container .toast-error {color:#991b1b;background:#fff1f2;border:1px solid #fda4af;}
+.payload-toast-container .toast-success .toast-icon svg path:first-child {fill:#15803d;}
+.payload-toast-container .toast-error .toast-icon svg path:first-child {fill:#dc2626;}
+.payload-toast-container .payload-toast-close-button {position:absolute;left:auto;right:12px;inset-inline-end:12px;top:12px;transform:none;width:20px;height:20px;border-radius:4px;color:inherit;}
+.payload-toast-container .payload-toast-close-button:focus-visible {outline:2px solid currentColor;outline-offset:2px;}

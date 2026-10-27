@@ -1,0 +1,7 @@
+import assert from 'node:assert/strict';
+import {chromium} from 'playwright-core';
+const base=process.env.CMS_TEST_URL||'http://localhost:3100';const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});const page=await browser.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+try{
+ for(const route of ['/','/about','/news','/news/planning','/projects','/projects/ongoing','/projects/completed','/projects/batumi-arena','/contact','/events']){const response=await page.goto(`${base}${route}`,{waitUntil:'networkidle'});assert.equal(response.status(),200,route);assert.ok(await page.locator('header').count());assert.ok(await page.locator('footer').count());assert.ok(await page.locator('h1').count());assert.ok(await page.locator('#navigation a[href="/projects"]').count());}
+ await page.goto(`${base}/projects/batumi-arena`,{waitUntil:'networkidle'});assert.match(await page.locator('.facebook-share').getAttribute('href'),/^https:\/\/www\.facebook\.com\/sharer\/sharer.php\?u=/);await page.locator('.gallery-tile').first().click();await page.locator('.gallery-lightbox[open]').waitFor();await page.getByRole('button',{name:'ფოტოგალერეის დახურვა'}).click();assert.equal(await page.locator('.gallery-lightbox[open]').count(),0);assert.deepEqual(errors,[]);console.log('PASS public homepage/About/News/Projects/Contact/Events, header/footer/navigation, gallery open/close, Facebook share URL and no browser exceptions');
+}finally{await browser.close();}

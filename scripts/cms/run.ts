@@ -1,0 +1,12 @@
+import nextEnv from '@next/env';
+const {loadEnvConfig}=nextEnv;
+loadEnvConfig(process.cwd());
+const command=process.argv[2];
+if(!['migrate:create','migrate','migrate:status','generate:types','generate:importmap'].includes(command))throw new Error('Unsupported CMS command');
+process.argv=['node','payload',...process.argv.slice(2)];
+const {createRequire}=await import('node:module');
+const {pathToFileURL}=await import('node:url');
+const path=await import('node:path');
+const require=createRequire(import.meta.url);
+const {bin}=await import(pathToFileURL(path.resolve(path.dirname(require.resolve('payload')),'bin/index.js')).href);
+await bin();

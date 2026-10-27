@@ -1,0 +1,2 @@
+const georgian:Record<string,string>=Object.fromEntries(Array.from('აბგდევზთიკლმნოპჟრსტუფქღყშჩცძწჭხჯჰ').map((c,i)=>[c,['a','b','g','d','e','v','z','t','i','k','l','m','n','o','p','zh','r','s','t','u','f','k','gh','q','sh','ch','ts','dz','ts','ch','kh','j','h'][i]]));
+export function slugify(value:string){return Array.from(value.normalize('NFKC').toLowerCase()).map(c=>georgian[c]??c).join('').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,180).replace(/-$/,'');}

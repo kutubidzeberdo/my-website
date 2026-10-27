@@ -1,0 +1,6 @@
+const string=(value:unknown)=>typeof value==='string'?value:'';
+export const pairCopy=(value:unknown)=>({ka:string(value),en:string(value)});
+const headings=['processLabel','processTitle','processIntro','servicesLabel','portfolioLabel','portfolioTitle','all','preview','progressLabel','progressTitle','phase','updated','newsLabel','newsTitle','read'];
+export function sectionCopy(raw:any,categories:{title?:string|null}[]){const value=raw&&typeof raw==='object'?raw:{};return {...value,...Object.fromEntries(headings.map(key=>[key,pairCopy(value[key])])),stages:(Array.isArray(value.stages)?value.stages:[]).map((row:any)=>[pairCopy(row?.[0]),pairCopy(row?.[1])]),categories:categories.map(c=>pairCopy(c.title))};}
+export function siteCopy(raw:any){const value=raw&&typeof raw==='object'?raw:{};return {...value,short:string(value.short),second:string(value.second),nav:Array.from({length:5},(_,i)=>string(value.nav?.[i])),footerTitles:Array.from({length:3},(_,i)=>string(value.footerTitles?.[i]))};}
+export function testimonialCopy(raw:any){const value=raw&&typeof raw==='object'?raw:{};return {...value,...Object.fromEntries(['label','title','intro','note','previous','next'].map(key=>[key,string(value[key])])),quotes:Array.isArray(value.quotes)?value.quotes.map(string):[]};}

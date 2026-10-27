@@ -1,8 +1,9 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { emptyContact, validateContact, type ContactFields } from '@/lib/contact-validation';
-import { contact } from '@/data/contact';
+import {useCMS} from './CMSContext';
 export default function ContactForm() {
+ const {settings:contact}=useCMS();
  const form = useRef<HTMLFormElement>(null);
  const [fields, setFields] = useState<ContactFields>({...emptyContact});
  const [errors, setErrors] = useState<Record<string,string>>({});

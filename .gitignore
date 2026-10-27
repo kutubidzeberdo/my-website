@@ -17,3 +17,7 @@ out/
 node_modules/
 .next/
 out/
+
+# CMS generated local uploads and private backup archives
+/media/
+/.cms-backups/

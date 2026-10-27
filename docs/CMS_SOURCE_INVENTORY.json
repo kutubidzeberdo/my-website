@@ -1,0 +1,240 @@
+{
+  "status": "pre-integration; no database import performed",
+  "files": [
+    {
+      "path": "public/images/arena.jpg",
+      "bytes": 806209,
+      "sha256": "9126286de6e19033b39df17b9f16175d7394c91eed9330d0e73a288df4b32832"
+    },
+    {
+      "path": "public/images/company-logo-full.webp",
+      "bytes": 63890,
+      "sha256": "74eddef6edc34cf1f853635dc031a670d9935e31444fd37eb1a9add830eb7c70"
+    },
+    {
+      "path": "public/images/company-logo-symbol.webp",
+      "bytes": 8706,
+      "sha256": "19d4a969f805128532e5d4300c1766777c76a2b611767fedccf7aa58efa614c0"
+    },
+    {
+      "path": "public/images/company-logo.png",
+      "bytes": 290815,
+      "sha256": "66249cfa304b2e47b24f2c3a94561c533c78f9b8bb82e762c71dfb972f91ffef"
+    },
+    {
+      "path": "public/images/construction.jpg",
+      "bytes": 647761,
+      "sha256": "8d10021260e876337bafa47b47f1f6b5dfbb4a1a6eb30bf8c22bd5d75f5a31fb"
+    },
+    {
+      "path": "public/images/infrastructure.jpg",
+      "bytes": 528331,
+      "sha256": "983413073cfab8e36e36d1eb45b522d93a88a97878fec0ffa8aded6c8d4ab95c"
+    },
+    {
+      "path": "public/images/mountains.jpg",
+      "bytes": 625878,
+      "sha256": "b0c30c05eeac5b587a23274cd809ce251ee5aeea3598e872d765e359ca6f43eb"
+    },
+    {
+      "path": "public/images/testimonial-portrait.jpg",
+      "bytes": 28342,
+      "sha256": "b2764da00102dc7f06bdf607a80a05b54200be55bf37ae08925d376d61cdab24"
+    },
+    {
+      "path": "src/app/about/page.tsx",
+      "bytes": 4007,
+      "sha256": "f99d72d974c24feadc46321041b5ee5d7da814a145feede389fe11ed0ade88cf"
+    },
+    {
+      "path": "src/app/api/contact/route.ts",
+      "bytes": 6160,
+      "sha256": "90eb9d78fc6142550c6cf0257f7baa51f9a28fa7e4e67643c041843b7fe43d06"
+    },
+    {
+      "path": "src/app/apple-icon.png",
+      "bytes": 6803,
+      "sha256": "866b834f09122e45e59e939c62e9b3e5e268ffc88ec4dfe1b05f8489dd53576f"
+    },
+    {
+      "path": "src/app/contact/page.tsx",
+      "bytes": 788,
+      "sha256": "862b25235d8c94b50f70687c246a22b53794d2381e3a94077b29eb03f2488fdd"
+    },
+    {
+      "path": "src/app/events/page.tsx",
+      "bytes": 555,
+      "sha256": "ba8d970c49874506bc03c86a6f2ed554237499f4c89282a321f5556e079122da"
+    },
+    {
+      "path": "src/app/globals.css",
+      "bytes": 36359,
+      "sha256": "4d69029ccd486e6cf22c0bfed7465def47feaf1cb83a3bc6073daa1e1bdc05ac"
+    },
+    {
+      "path": "src/app/icon.png",
+      "bytes": 1763,
+      "sha256": "5407fbb885eeb8d482690632c561133be572cf5df831715a503217389fee5f8c"
+    },
+    {
+      "path": "src/app/layout.tsx",
+      "bytes": 565,
+      "sha256": "c8dc031cd364f0a0e501fa8e30c6948608e718e3b5f7854bdaf80cc26c7ba61a"
+    },
+    {
+      "path": "src/app/news/[slug]/page.tsx",
+      "bytes": 1632,
+      "sha256": "3cfbf394d2b56aa14ed051a26f7eedb177995d10fc85e46b37c534624305028d"
+    },
+    {
+      "path": "src/app/news/page.tsx",
+      "bytes": 215,
+      "sha256": "f21b78e023de0b418d7734a7790a8a038970f8dd9b25f306107ef8a0ca731087"
+    },
+    {
+      "path": "src/app/not-found.tsx",
+      "bytes": 318,
+      "sha256": "1e6eae2974e519fc8cedc748fc6cb5efd7485820c848d24599daee5e8804260f"
+    },
+    {
+      "path": "src/app/page.tsx",
+      "bytes": 99,
+      "sha256": "343a3a21b40ee6a218856a96a7c70ff1de2e04f968fa0d0893450bffbf482b6a"
+    },
+    {
+      "path": "src/app/projects/[slug]/page.tsx",
+      "bytes": 3077,
+      "sha256": "2662d5dc0bd250c3fd34d927fef7c54aedaf5d4914f7cb2de93ecf31cbe8f808"
+    },
+    {
+      "path": "src/app/projects/completed/page.tsx",
+      "bytes": 234,
+      "sha256": "b2fdf984325a8e2a24d784c11cb68d83aba90388c4b82c91d5838ea76e89ab57"
+    },
+    {
+      "path": "src/app/projects/ongoing/page.tsx",
+      "bytes": 230,
+      "sha256": "22ba85af665aea87dbd4241a096ab1206b13f8de68397fc0dd2e135a8a22fadf"
+    },
+    {
+      "path": "src/app/projects/page.tsx",
+      "bytes": 223,
+      "sha256": "8f06e0a0dd0cd06caaf1e9e17fcff821010c81c1893de04751ec84c7a0fe3159"
+    },
+    {
+      "path": "src/components/ContactForm.tsx",
+      "bytes": 5795,
+      "sha256": "b6e69dcd28e8e3f5668774018aab618162249bf632fbf97fdf2781b4104df3b2"
+    },
+    {
+      "path": "src/components/ContentElements.tsx",
+      "bytes": 745,
+      "sha256": "ceae4e6f755d3731a2234947ca10c44a5641550ea46dd89ac8408aa86935cc87"
+    },
+    {
+      "path": "src/components/ContentListing.tsx",
+      "bytes": 4901,
+      "sha256": "a5a8af0888232de8b1ad46056c5c32c6a71bd50824d8b3b334af734773882753"
+    },
+    {
+      "path": "src/components/FacebookShareButton.tsx",
+      "bytes": 786,
+      "sha256": "c5cd9f33c8143216888366120cd8854ea7141dee5a2376a443aa66c15b924238"
+    },
+    {
+      "path": "src/components/Footer.tsx",
+      "bytes": 3516,
+      "sha256": "a8ed5d35385287d35939500d4f79d64f9c175af24b739c4b25b0b863dfe5df2d"
+    },
+    {
+      "path": "src/components/Header.tsx",
+      "bytes": 2732,
+      "sha256": "f3adc4841aeff70bd935dcf98ee6fe7ca1fa9aec1f3058a3e1f5a237f04eda4a"
+    },
+    {
+      "path": "src/components/HomepageSections.tsx",
+      "bytes": 4978,
+      "sha256": "33667b972c1fd5be1cd186b3f19ee1616a3cbc6cb97b483cdc1ec5111f5a66ff"
+    },
+    {
+      "path": "src/components/InternalPage.tsx",
+      "bytes": 916,
+      "sha256": "318eb7e155fe87787dc01ab40259bceb030be1201b76bae2af5c74a1e5fa60d8"
+    },
+    {
+      "path": "src/components/PageUtilities.tsx",
+      "bytes": 877,
+      "sha256": "c74f02408639a89581a8d926bf657184b29c67e1b4ee9a955c5bedf02b544abd"
+    },
+    {
+      "path": "src/components/PhotoGallery.tsx",
+      "bytes": 5217,
+      "sha256": "daa87b322e3dd4872708db6ab0123370f703b9dc032a35e06d71ba349c474efb"
+    },
+    {
+      "path": "src/components/ProjectPortfolio.tsx",
+      "bytes": 2860,
+      "sha256": "4b28da5427849190a7feed4fc040df42feb715267fa7ec668b60d488cff5986f"
+    },
+    {
+      "path": "src/components/Statistics.tsx",
+      "bytes": 1562,
+      "sha256": "08674e99788805752e1bf2c07aacb6c9dddd0e0c44e8b6f897ec43c1d67860e3"
+    },
+    {
+      "path": "src/components/Testimonials.tsx",
+      "bytes": 1540,
+      "sha256": "8bd98dc857b9f00f497581f4401e051ac610bfe94fdd1f78e424954c95b657c9"
+    },
+    {
+      "path": "src/components/Website.tsx",
+      "bytes": 2811,
+      "sha256": "87cf5df86823721331b4fbafdaa4fa34fa51a241fc1fe4b569c39cb436f06076"
+    },
+    {
+      "path": "src/data/contact.ts",
+      "bytes": 845,
+      "sha256": "3d69504de06a7f7dda88d2558d06641bfe822910969ed3e7a02ed54b4dc0f02d"
+    },
+    {
+      "path": "src/data/content.ts",
+      "bytes": 4426,
+      "sha256": "dcc5442fd990d90124250b82df32972c0a007f233deef01f8d869bcb0851ead2"
+    },
+    {
+      "path": "src/data/homepage.ts",
+      "bytes": 13422,
+      "sha256": "dea8b4e52b664673172d450809d30e2469f5faed627fa0385aaf612e93ed9df2"
+    },
+    {
+      "path": "src/data/ui.ts",
+      "bytes": 2367,
+      "sha256": "e3f67bc9ecde8ae0b38250fdacc994a6f4a827026be28d350d58f39e728ca5c1"
+    },
+    {
+      "path": "src/lib/contact-validation.ts",
+      "bytes": 1992,
+      "sha256": "4f5aec95133f4495bd29e7f2f961a222d5ca7e132bec768bbdf464062bf969c9"
+    },
+    {
+      "path": "src/lib/gallery.ts",
+      "bytes": 1052,
+      "sha256": "7a98cc2c6ac483f244309569d80daf3e2b27a4099e3374e827c264c1a586f743"
+    },
+    {
+      "path": "src/lib/gmail.ts",
+      "bytes": 2935,
+      "sha256": "6383f30fa9c70c6fd4fd0d26d893ef7c0f5ee00d3e146e5faed235c749879e55"
+    },
+    {
+      "path": "src/lib/records.ts",
+      "bytes": 1785,
+      "sha256": "b923493ed42ff3b9bb89e82b9b8f82b846a0488f08b09966a0a72e457c115d95"
+    },
+    {
+      "path": "src/lib/site-metadata.ts",
+      "bytes": 783,
+      "sha256": "fe5e26cd70fe895522be28b83ff9d6ec7dd781dbbc48366c31972c5d53fca9dc"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict';
+import nextEnv from '@next/env';
+import {readFile} from 'node:fs/promises';
+import {randomBytes} from 'node:crypto';
+import {chromium} from 'playwright-core';
+import {sql,type PostgresAdapter} from '@payloadcms/db-postgres';
+nextEnv.loadEnvConfig(process.cwd());const {getPayload}=await import('payload');const {default:config}=await import('../payload.config');const payload=await getPayload({config});const db=payload.db as unknown as PostgresAdapter;
+const base=process.env.CMS_TEST_URL||'http://localhost:3100';const c=JSON.parse(await readFile('.cms-backups/initial-admin.json','utf8'));
+async function call(path:string,data:unknown,cookie=''){const res=await fetch(`${base}/api/users/${path}`,{method:'POST',headers:{Origin:base,'Content-Type':'application/json',...(cookie?{Cookie:cookie}:{})},body:JSON.stringify(data)});return {res,json:await res.json(),cookie:res.headers.get('set-cookie')?.split(';')[0]||''};}
+let id:number|undefined;let adminCookie='';
+try{
+ const login=await call('login',{username:c.username,password:c.password});assert.equal(login.res.status,200);adminCookie=login.cookie;
+ const username=`remember-test-${randomBytes(6).toString('hex')}`;const password=randomBytes(24).toString('base64url');
+ const made=await fetch(`${base}/api/users`,{method:'POST',headers:{Origin:base,Cookie:adminCookie,'Content-Type':'application/json'},body:JSON.stringify({username,email:`${username}@example.com`,password,role:'viewer',active:true})});assert.equal(made.status,201);id=(await made.json()).doc.id;
+ const normal=await call('session-login',{username,password,rememberMe:false});assert.equal(normal.res.status,200);assert.ok(Math.abs(normal.json.exp-Date.now()/1000-7200)<3);assert.match(normal.res.headers.get('set-cookie')!,/HttpOnly/i);if(process.env.CMS_TEST_SECURE!=='0')assert.match(normal.res.headers.get('set-cookie')!,/Secure/i);assert.match(normal.res.headers.get('set-cookie')!,/SameSite=Lax/i);assert.equal(normal.json.token,undefined);assert.equal(normal.json.user.sessionPolicies,undefined);
+ const long=await call('session-login',{username,password,rememberMe:true});assert.equal(long.res.status,200);assert.ok(Math.abs(long.json.exp-Date.now()/1000-30*86400)<3);assert.equal(long.json.token,undefined);assert.equal(long.json.user.sessionPolicies,undefined);
+ const rows=await db.drizzle.execute(sql`SELECT expires_at FROM users_sessions WHERE _parent_id=${id} ORDER BY created_at DESC LIMIT 1`);assert.ok(Math.abs(new Date(String(rows.rows[0].expires_at)).getTime()/1000-long.json.exp)<2);
+ const defaultAgain=await call('login',{username,password});assert.equal(defaultAgain.res.status,200);assert.ok(Math.abs(defaultAgain.json.exp-Date.now()/1000-7200)<3);
+ const refreshed=await call('refresh-token',{},long.cookie);assert.equal(refreshed.res.status,200);assert.ok(Math.abs(refreshed.json.exp-long.json.exp)<3);assert.equal(refreshed.json.refreshedToken,undefined);assert.equal(refreshed.json.token,undefined);assert.equal(refreshed.json.user.sessionPolicies,undefined);
+ const regularRefresh=await call('refresh-token',{},normal.cookie);assert.equal(regularRefresh.res.status,200);assert.ok(Math.abs(regularRefresh.json.exp-Date.now()/1000-7200)<3);
+ assert.equal(payload.collections.users.config.auth.tokenExpiration,7200);
+ const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});try{const ctx=await browser.newContext();await ctx.addCookies([{name:'payload-token',value:regularRefresh.cookie.slice('payload-token='.length),url:base,httpOnly:true,sameSite:'Lax',secure:process.env.CMS_TEST_SECURE!=='0'}]);const page=await ctx.newPage();await page.goto(`${base}/admin`,{waitUntil:'networkidle'});assert.equal(new URL(page.url()).pathname,'/admin');assert.equal(await page.locator('.pmc-metric').filter({hasText:'მომხმარებლები'}).count(),0);assert.equal(await page.locator('.pmc-nav a[href="/admin/collections/users"]').count(),0);assert.equal(await page.locator('.pmc-quick-actions a').count(),0);console.log('PASS viewer dashboard/navigation withholds user statistics and unauthorized quick actions');}finally{await browser.close();}
+ const logout=await call('logout',{},refreshed.cookie);assert.equal(logout.res.status,200);assert.ok((await call('refresh-token',{},refreshed.cookie)).res.status>=400);
+ const rememberedAgain=await call('session-login',{username,password,rememberMe:true});assert.equal(rememberedAgain.res.status,200);
+ const deactivate=await fetch(`${base}/api/users/${id}`,{method:'PATCH',headers:{Cookie:adminCookie,Origin:base,'Content-Type':'application/json'},body:JSON.stringify({active:false})});assert.equal(deactivate.status,200);assert.ok((await call('refresh-token',{},rememberedAgain.cookie)).res.status>=400);assert.ok((await call('session-login',{username,password,rememberMe:true})).res.status>=400);
+ const userRows=await db.drizzle.execute(sql`SELECT count(*)::int AS count FROM users_sessions WHERE _parent_id=${id}`);assert.equal(userRows.rows[0].count,0);
+ const reactivate=await fetch(`${base}/api/users/${id}`,{method:'PATCH',headers:{Cookie:adminCookie,Origin:base,'Content-Type':'application/json'},body:JSON.stringify({active:true})});assert.equal(reactivate.status,200);for(let i=0;i<5;i++)assert.ok((await call('session-login',{username,password:'incorrect',rememberMe:true})).res.status>=400);assert.ok((await call('session-login',{username,password,rememberMe:true})).res.status>=400);console.log('PASS custom Remember Me endpoint preserves native five-attempt account lockout');
+ console.log('PASS regular 2h, remembered 30d, matching server expiry, persistent HttpOnly/Secure/SameSite cookies, capped refresh, independent policies, no exposed token/metadata, native logout and deactivation.');
+}finally{if(id&&adminCookie){const r=await fetch(`${base}/api/users/${id}`,{method:'DELETE',headers:{Cookie:adminCookie,Origin:base}});assert.equal(r.status,200);}await payload.destroy();}
+process.exit(0);
