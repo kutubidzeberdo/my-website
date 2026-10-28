@@ -8,17 +8,21 @@ import { s3Storage } from '@payloadcms/storage-s3';
 import { Users } from './src/cms/users';
 import { AuditLogs, Categories, Media, News, Projects, Slides, Statistics, Testimonials } from './src/cms/collections';
 import { About, Homepage, SiteSettings } from './src/cms/globals';
+import {en} from '@payloadcms/translations/languages/en';
+import {retireObsoleteFields} from './src/cms/retired-fields';
+import {bilingualEditor} from './src/cms/bilingual';
 import { ka } from './src/cms/translations';
 import { gallery, video } from './src/cms/fields';
 
 if(!process.env.PAYLOAD_SECRET || !process.env.DATABASE_URL)throw new Error('CMS requires DATABASE_URL and PAYLOAD_SECRET in the local or encrypted runtime environment.');
 const serverURL=process.env.CMS_SERVER_URL||process.env.NEXT_PUBLIC_SITE_URL||'http://localhost:3000';
+for(const entity of [News,Projects,Slides,Testimonials,Statistics,Categories,Media,About,Homepage,SiteSettings]){retireObsoleteFields(entity);bilingualEditor(entity);}
 export default buildConfig({
  secret:process.env.PAYLOAD_SECRET,
  serverURL,csrf:[serverURL],cors:[serverURL],
- admin:{theme:'light',dateFormat:'dd MMM yyyy, HH:mm',toast:{duration:4500,position:'bottom-right',limit:3},user:'users',importMap:{baseDir:path.resolve('.')},components:{providers:['/src/cms/admin/NotificationPolicy#NotificationPolicy'],Nav:'/src/cms/admin/Navigation#Navigation',graphics:{Logo:'/src/cms/admin/Brand#Brand',Icon:'/src/cms/admin/Brand#BrandIcon'},views:{login:{Component:'/src/cms/admin/Login#Login',path:'/login'},dashboard:{Component:'/src/cms/admin/Dashboard#Dashboard'}}},meta:{titleSuffix:'— PMC ადმინისტრირება'}},
+ admin:{theme:'light',dateFormat:'dd MMM yyyy, HH:mm',toast:{duration:4500,position:'bottom-right',limit:3},user:'users',importMap:{baseDir:path.resolve('.')},components:{actions:['/src/cms/admin/BilingualFields#InterfaceLanguage'],providers:['/src/cms/admin/AdminLanguages#AdminLanguages','/src/cms/admin/NotificationPolicy#NotificationPolicy'],Nav:'/src/cms/admin/Navigation#Navigation',graphics:{Logo:'/src/cms/admin/Brand#Brand',Icon:'/src/cms/admin/Brand#BrandIcon'},views:{login:{Component:'/src/cms/admin/Login#Login',path:'/login'},dashboard:{Component:'/src/cms/admin/Dashboard#Dashboard'}}},meta:{titleSuffix:'— PMC ადმინისტრირება'}},
  // Upstream language union omits Georgian; runtime supports custom dictionaries.
- i18n:{supportedLanguages:{ka},fallbackLanguage:'ka',translations:{ka:{lexical:ka.translations.lexical}}} as unknown as Config['i18n'],
+ i18n:{supportedLanguages:{ka,en},fallbackLanguage:'ka',translations:{ka:{lexical:ka.translations.lexical}}} as unknown as Config['i18n'],
  localization:{locales:[{label:'ქართული',code:'ka'},{label:'English',code:'en'}],defaultLocale:'ka',fallback:true},
  db:postgresAdapter({pool:{connectionString:process.env.DATABASE_URL},push:false,disableCreateDatabase:true,migrationDir:path.resolve('src/cms/migrations')}),
  collections:[Users,Media,Categories,News,Projects,Slides,Testimonials,Statistics,AuditLogs],

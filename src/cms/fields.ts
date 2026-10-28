@@ -1,6 +1,6 @@
 import type { Field, UploadField } from 'payload';
 import {allowedVideoURL} from './video';
-export const text = (name: string, label: string, required=false, localized=true): Field => ({name,type:'text',label,required,localized,maxLength:1000});
+export const text = (name: string, label: string, required=false, localized=true): Field => ({name,type:'text',label,required:required&&!localized,localized,maxLength:1000,validate:required&&localized?((value:unknown,{req}:any)=>req.locale==='en'||typeof value==='string'&&!!value.trim()||(req.i18n?.language==='en'?'Required Field':'სავალდებულო ველი')):undefined});
 export const image = (name='image',label='ფოტო'): UploadField => ({name,type:'upload',relationTo:'media',label});
 export const order: Field = {name:'order',type:'number',label:'რიგი',defaultValue:0,index:true};
 export const active: Field = {name:'active',type:'checkbox',label:'აქტიური',defaultValue:true,index:true,admin:{components:{Cell:'/src/cms/admin/Cells#ActiveCell'}}};

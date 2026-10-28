@@ -22,7 +22,7 @@ export function copyField(name: string, value: unknown): Field {
  if(value && typeof value==='object'&&!Array.isArray(value)&&'ka' in value)return {name,type:'textarea',localized:true,label:copyLabels[name]||'ტექსტი'};
  if(Array.isArray(value))return {name,type:'array',label:copyLabels[name]||'ტექსტი',fields:[copyField('value',value[0]??'')]};
  if(value && typeof value==='object')return {name,type:'group',label:copyLabels[name]||'ტექსტი',fields:Object.entries(value).map(([k,v])=>copyField(k,v))};
- return typeof value==='number'?{name,type:'number',label:copyLabels[name]||'ტექსტი'}:{name,type:'textarea',label:copyLabels[name]||'ტექსტი'};
+ return typeof value==='number'?{name,type:'number',label:copyLabels[name]||'ტექსტი'}:{name,type:'textarea',localized:true,label:copyLabels[name]||'ტექსტი'};
 }
 const global=(slug:'about'|'site-settings'|'homepage',label:string,fields:Field[]):GlobalConfig=>({slug,label,admin:{group:'გვერდები და პარამეტრები'},access:{read:()=>true,update:can(slug,'update')},versions:{max:20},hooks:{beforeChange:[({data})=>{validateContent(data);return data;}],afterChange:[auditGlobal,invalidatePublic]},fields:[{name:'migrationSource',type:'text',admin:{readOnly:true,hidden:true},access:{update:()=>false}},...fields]});
 export const About=global('about','კომპანიის შესახებ',[
@@ -32,7 +32,7 @@ export const About=global('about','კომპანიის შესახ�
  ]},
  {name:'paragraphs',type:'array',label:'ოფიციალური ტექსტი (არქივი)',admin:{hidden:true},access:{update:()=>false},fields:[{name:'text',type:'textarea',localized:true,required:true,label:'აბზაცი'}]},
 ]);
-export const SiteSettings=global('site-settings','საიტის პარამეტრები',[text('companyName','კომპანიის დასახელება',true),text('phone','ტელეფონი'),text('telephoneHref','სატელეფონო ბმული',false,false),text('email','საჯარო ელფოსტა',false,false),text('address','მისამართი'),text('facebook','Facebook',false,false),text('instagram','Instagram',false,false),{...image('logo','ლოგო'),access:{update:({req})=>req.user?.active===true&&['super-admin','administrator'].includes(req.user.role)}},image('symbolLogo','ლოგოს სიმბოლო'),image('fullLogo','სრული ლოგო'),copyField('copy',content.ka)]);
+export const SiteSettings=global('site-settings','საიტის პარამეტრები',[text('companyName','კომპანიის დასახელება',true),text('phone','ტელეფონი',false,false),text('telephoneHref','სატელეფონო ბმული',false,false),text('email','საჯარო ელფოსტა',false,false),text('address','მისამართი'),text('facebook','Facebook',false,false),text('instagram','Instagram',false,false),{...image('logo','ლოგო'),access:{update:({req})=>req.user?.active===true&&['super-admin','administrator'].includes(req.user.role)}},image('symbolLogo','ლოგოს სიმბოლო'),image('fullLogo','სრული ლოგო'),copyField('copy',content.ka)]);
 export const Homepage=global('homepage','მთავარი გვერდის ტექსტები',[copyField('sections',homepage),copyField('testimonialsCopy',testimonials.ka),{name:'previewNotice',type:'textarea',localized:true,label:'საილუსტრაციო გაფრთხილება'}]);
 
 // Public destination fields become live links after cutover; validate before persistence.

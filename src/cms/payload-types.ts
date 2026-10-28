@@ -195,7 +195,7 @@ export interface User {
   collection: 'users';
 }
 /**
- * აქ შეგიძლიათ ატვირთოთ, ნახოთ და მართოთ საიტის ფოტოები და სხვა მედია ფაილები. ატვირთული ფაილების გამოყენება შესაძლებელია სიახლეებში, პროექტებში, სლაიდერსა და ფოტოგალერეებში.
+ * Upload, view and manage site images and media. Uploaded files can be used in News, Projects, Slides and galleries.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
@@ -204,16 +204,28 @@ export interface Media {
   id: number;
   sourceKey?: string | null;
   title?: string | null;
-  alt: string;
+  bilingual_title?: {
+    ka?: string | null;
+    en?: string | null;
+  };
+  alt?: string | null;
+  bilingual_alt?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   caption?: string | null;
+  bilingual_caption?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   sourceHash?: string | null;
+  filesize?: number | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
   thumbnailURL?: string | null;
   filename?: string | null;
   mimeType?: string | null;
-  filesize?: number | null;
   width?: number | null;
   height?: number | null;
   focalX?: number | null;
@@ -236,7 +248,11 @@ export interface Media {
 export interface ProjectCategory {
   id: number;
   sourceKey?: string | null;
-  title: string;
+  title?: string | null;
+  bilingual_title?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   order?: number | null;
   updatedAt: string;
   createdAt: string;
@@ -257,14 +273,22 @@ export interface News {
     | number
     | boolean
     | null;
-  title: string;
+  title?: string | null;
+  bilingual_title?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   /**
    * ეს არის გვერდის ბმულის ბოლო ნაწილი. ის ავტომატურად შეიქმნება სათაურიდან, მაგრამ სურვილის შემთხვევაში შეგიძლიათ შეცვალოთ.
    */
   slug: string;
   summary?: string | null;
+  bilingual_summary?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   /**
-   * ინსტრუმენტების პანელი: ტექსტი, ფოტო, ვიდეო და გალერეა. სწრაფი ჩასმა: /; გაუქმება: Ctrl/⌘+Z.
+   * Toolbar: text, images, video and galleries. Quick insert: /; undo: Ctrl/⌘+Z.
    */
   content?: {
     root: {
@@ -281,12 +305,58 @@ export interface News {
     };
     [k: string]: unknown;
   } | null;
+  bilingual_content?: {
+    /**
+     * Toolbar: text, images, video and galleries. Quick insert: /; undo: Ctrl/⌘+Z.
+     */
+    ka?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    /**
+     * Toolbar: text, images, video and galleries. Quick insert: /; undo: Ctrl/⌘+Z.
+     */
+    en?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
   image?: (number | null) | Media;
   gallery?:
     | {
         image: number | Media;
         caption?: string | null;
+        bilingual_caption?: {
+          ka?: string | null;
+          en?: string | null;
+        };
         alt?: string | null;
+        bilingual_alt?: {
+          ka?: string | null;
+          en?: string | null;
+        };
         id?: string | null;
       }[]
     | null;
@@ -294,7 +364,15 @@ export interface News {
   publishedAt?: string | null;
   seo?: {
     title?: string | null;
+    bilingual_title?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     description?: string | null;
+    bilingual_description?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     image?: (number | null) | Media;
   };
   illustrative?: boolean | null;
@@ -321,18 +399,26 @@ export interface Project {
     | null;
   status: 'ongoing' | 'completed' | 'planned';
   /**
-   * უცნობი პროგრესი დატოვეთ ცარიელი; 0 და 100 დასაშვებია
+   * Leave unknown progress empty; 0 and 100 are valid.
    */
   progress?: number | null;
   progressVerified?: boolean | null;
-  title: string;
+  title?: string | null;
+  bilingual_title?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   /**
    * ეს არის გვერდის ბმულის ბოლო ნაწილი. ის ავტომატურად შეიქმნება სათაურიდან, მაგრამ სურვილის შემთხვევაში შეგიძლიათ შეცვალოთ.
    */
   slug: string;
   summary?: string | null;
+  bilingual_summary?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   /**
-   * ინსტრუმენტების პანელი: ტექსტი, ფოტო, ვიდეო და გალერეა. სწრაფი ჩასმა: /; გაუქმება: Ctrl/⌘+Z.
+   * Toolbar: text, images, video and galleries. Quick insert: /; undo: Ctrl/⌘+Z.
    */
   content?: {
     root: {
@@ -349,30 +435,112 @@ export interface Project {
     };
     [k: string]: unknown;
   } | null;
+  bilingual_content?: {
+    /**
+     * Toolbar: text, images, video and galleries. Quick insert: /; undo: Ctrl/⌘+Z.
+     */
+    ka?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    /**
+     * Toolbar: text, images, video and galleries. Quick insert: /; undo: Ctrl/⌘+Z.
+     */
+    en?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
   image?: (number | null) | Media;
   gallery?:
     | {
         image: number | Media;
         caption?: string | null;
+        bilingual_caption?: {
+          ka?: string | null;
+          en?: string | null;
+        };
         alt?: string | null;
+        bilingual_alt?: {
+          ka?: string | null;
+          en?: string | null;
+        };
         id?: string | null;
       }[]
     | null;
   videoURL?: string | null;
   category?: (number | null) | ProjectCategory;
   location?: string | null;
+  bilingual_location?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   phase?: string | null;
+  bilingual_phase?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   progressUpdatedAt?: string | null;
   budget?: string | null;
+  bilingual_budget?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   contractor?: string | null;
+  bilingual_contractor?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   client?: string | null;
+  bilingual_client?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   investment?: string | null;
+  bilingual_investment?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   area?: string | null;
+  bilingual_area?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   startDate?: string | null;
   endDate?: string | null;
   seo?: {
     title?: string | null;
+    bilingual_title?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     description?: string | null;
+    bilingual_description?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     image?: (number | null) | Media;
   };
   illustrative?: boolean | null;
@@ -388,11 +556,27 @@ export interface Project {
 export interface Slide {
   id: number;
   sourceKey?: string | null;
-  title: string;
+  title?: string | null;
+  bilingual_title?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   subtitle?: string | null;
+  bilingual_subtitle?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   description?: string | null;
+  bilingual_description?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   image?: (number | null) | Media;
   buttonText?: string | null;
+  bilingual_buttonText?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   buttonURL?: string | null;
   order?: number | null;
   active?: boolean | null;
@@ -406,9 +590,21 @@ export interface Slide {
 export interface Testimonial {
   id: number;
   sourceKey?: string | null;
-  title: string;
+  title?: string | null;
+  bilingual_title?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   position?: string | null;
-  quote: string;
+  bilingual_position?: {
+    ka?: string | null;
+    en?: string | null;
+  };
+  quote?: string | null;
+  bilingual_quote?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   portrait?: (number | null) | Media;
   notice?: string | null;
   illustrative?: boolean | null;
@@ -424,9 +620,17 @@ export interface Testimonial {
 export interface Statistic {
   id: number;
   sourceKey?: string | null;
-  title: string;
+  title?: string | null;
+  bilingual_title?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   value: number;
   suffix?: string | null;
+  bilingual_suffix?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   order?: number | null;
   active?: boolean | null;
   illustrative?: boolean | null;
@@ -590,16 +794,34 @@ export interface UsersSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   sourceKey?: T;
   title?: T;
+  bilingual_title?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   alt?: T;
+  bilingual_alt?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   caption?: T;
+  bilingual_caption?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   sourceHash?: T;
+  filesize?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
   thumbnailURL?: T;
   filename?: T;
   mimeType?: T;
-  filesize?: T;
   width?: T;
   height?: T;
   focalX?: T;
@@ -626,6 +848,12 @@ export interface MediaSelect<T extends boolean = true> {
 export interface ProjectCategoriesSelect<T extends boolean = true> {
   sourceKey?: T;
   title?: T;
+  bilingual_title?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   order?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -638,16 +866,46 @@ export interface NewsSelect<T extends boolean = true> {
   sourceKey?: T;
   previousSlugs?: T;
   title?: T;
+  bilingual_title?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   slug?: T;
   summary?: T;
+  bilingual_summary?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   content?: T;
+  bilingual_content?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   image?: T;
   gallery?:
     | T
     | {
         image?: T;
         caption?: T;
+        bilingual_caption?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         alt?: T;
+        bilingual_alt?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         id?: T;
       };
   videoURL?: T;
@@ -656,7 +914,19 @@ export interface NewsSelect<T extends boolean = true> {
     | T
     | {
         title?: T;
+        bilingual_title?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         description?: T;
+        bilingual_description?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         image?: T;
       };
   illustrative?: T;
@@ -676,35 +946,119 @@ export interface ProjectsSelect<T extends boolean = true> {
   progress?: T;
   progressVerified?: T;
   title?: T;
+  bilingual_title?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   slug?: T;
   summary?: T;
+  bilingual_summary?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   content?: T;
+  bilingual_content?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   image?: T;
   gallery?:
     | T
     | {
         image?: T;
         caption?: T;
+        bilingual_caption?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         alt?: T;
+        bilingual_alt?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         id?: T;
       };
   videoURL?: T;
   category?: T;
   location?: T;
+  bilingual_location?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   phase?: T;
+  bilingual_phase?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   progressUpdatedAt?: T;
   budget?: T;
+  bilingual_budget?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   contractor?: T;
+  bilingual_contractor?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   client?: T;
+  bilingual_client?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   investment?: T;
+  bilingual_investment?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   area?: T;
+  bilingual_area?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   startDate?: T;
   endDate?: T;
   seo?:
     | T
     | {
         title?: T;
+        bilingual_title?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         description?: T;
+        bilingual_description?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         image?: T;
       };
   illustrative?: T;
@@ -720,10 +1074,34 @@ export interface ProjectsSelect<T extends boolean = true> {
 export interface SlidesSelect<T extends boolean = true> {
   sourceKey?: T;
   title?: T;
+  bilingual_title?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   subtitle?: T;
+  bilingual_subtitle?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   description?: T;
+  bilingual_description?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   image?: T;
   buttonText?: T;
+  bilingual_buttonText?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   buttonURL?: T;
   order?: T;
   active?: T;
@@ -737,8 +1115,26 @@ export interface SlidesSelect<T extends boolean = true> {
 export interface TestimonialsSelect<T extends boolean = true> {
   sourceKey?: T;
   title?: T;
+  bilingual_title?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   position?: T;
+  bilingual_position?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   quote?: T;
+  bilingual_quote?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   portrait?: T;
   notice?: T;
   illustrative?: T;
@@ -754,8 +1150,20 @@ export interface TestimonialsSelect<T extends boolean = true> {
 export interface StatisticsSelect<T extends boolean = true> {
   sourceKey?: T;
   title?: T;
+  bilingual_title?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   value?: T;
   suffix?: T;
+  bilingual_suffix?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   order?: T;
   active?: T;
   illustrative?: T;
@@ -822,9 +1230,13 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface About {
   id: number;
   migrationSource?: string | null;
-  title: string;
+  title?: string | null;
+  bilingual_title?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   /**
-   * მონიშნეთ ტექსტი ფორმატირებისთვის. ფოტო, ვიდეო და გალერეა დაამატეთ ინსტრუმენტების პანელიდან ან / მენიუდან.
+   * Select text to format it. Add images, video and galleries from the toolbar or the / menu.
    */
   content?: {
     root: {
@@ -841,10 +1253,56 @@ export interface About {
     };
     [k: string]: unknown;
   } | null;
+  bilingual_content?: {
+    /**
+     * Select text to format it. Add images, video and galleries from the toolbar or the / menu.
+     */
+    ka?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    /**
+     * Select text to format it. Add images, video and galleries from the toolbar or the / menu.
+     */
+    en?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
   image?: (number | null) | Media;
   seo?: {
     title?: string | null;
+    bilingual_title?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     description?: string | null;
+    bilingual_description?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     image?: (number | null) | Media;
   };
   paragraphs?:
@@ -863,11 +1321,19 @@ export interface About {
 export interface SiteSetting {
   id: number;
   migrationSource?: string | null;
-  companyName: string;
+  companyName?: string | null;
+  bilingual_companyName?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   phone?: string | null;
   telephoneHref?: string | null;
   email?: string | null;
   address?: string | null;
+  bilingual_address?: {
+    ka?: string | null;
+    en?: string | null;
+  };
   facebook?: string | null;
   instagram?: string | null;
   logo?: (number | null) | Media;
@@ -875,22 +1341,54 @@ export interface SiteSetting {
   fullLogo?: (number | null) | Media;
   copy?: {
     company?: string | null;
+    bilingual_company?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     short?: string | null;
+    bilingual_short?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     second?: string | null;
+    bilingual_second?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     nav?:
       | {
           value?: string | null;
+          bilingual_value?: {
+            ka?: string | null;
+            en?: string | null;
+          };
           id?: string | null;
         }[]
       | null;
     contact?: string | null;
+    bilingual_contact?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     explore?: string | null;
+    bilingual_explore?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     eyebrow?: string | null;
+    bilingual_eyebrow?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     slides?:
       | {
           value?:
             | {
                 value?: string | null;
+                bilingual_value?: {
+                  ka?: string | null;
+                  en?: string | null;
+                };
                 id?: string | null;
               }[]
             | null;
@@ -898,28 +1396,76 @@ export interface SiteSetting {
         }[]
       | null;
     overview?: string | null;
+    bilingual_overview?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     description?: string | null;
+    bilingual_description?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     demo?: string | null;
     footerText?: string | null;
+    bilingual_footerText?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     footerTitles?:
       | {
           value?: string | null;
+          bilingual_value?: {
+            ka?: string | null;
+            en?: string | null;
+          };
           id?: string | null;
         }[]
       | null;
     footerLinks?:
       | {
           value?: string | null;
+          bilingual_value?: {
+            ka?: string | null;
+            en?: string | null;
+          };
           id?: string | null;
         }[]
       | null;
     contactNote?: string | null;
+    bilingual_contactNote?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     rights?: string | null;
+    bilingual_rights?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     pause?: string | null;
+    bilingual_pause?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     play?: string | null;
+    bilingual_play?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     next?: string | null;
+    bilingual_next?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     previous?: string | null;
+    bilingual_previous?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     menu?: string | null;
+    bilingual_menu?: {
+      ka?: string | null;
+      en?: string | null;
+    };
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -933,13 +1479,29 @@ export interface Homepage {
   migrationSource?: string | null;
   sections?: {
     processLabel?: string | null;
+    bilingual_processLabel?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     processTitle?: string | null;
+    bilingual_processTitle?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     processIntro?: string | null;
+    bilingual_processIntro?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     stages?:
       | {
           value?:
             | {
                 value?: string | null;
+                bilingual_value?: {
+                  ka?: string | null;
+                  en?: string | null;
+                };
                 id?: string | null;
               }[]
             | null;
@@ -947,32 +1509,88 @@ export interface Homepage {
         }[]
       | null;
     servicesLabel?: string | null;
+    bilingual_servicesLabel?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     servicesTitle?: string | null;
+    bilingual_servicesTitle?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     categories?:
       | {
           value?: string | null;
+          bilingual_value?: {
+            ka?: string | null;
+            en?: string | null;
+          };
           id?: string | null;
         }[]
       | null;
     serviceDescriptions?:
       | {
           value?: string | null;
+          bilingual_value?: {
+            ka?: string | null;
+            en?: string | null;
+          };
           id?: string | null;
         }[]
       | null;
     portfolioLabel?: string | null;
+    bilingual_portfolioLabel?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     portfolioTitle?: string | null;
+    bilingual_portfolioTitle?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     demo?: string | null;
     all?: string | null;
+    bilingual_all?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     preview?: string | null;
+    bilingual_preview?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     close?: string | null;
+    bilingual_close?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     transparencyLabel?: string | null;
+    bilingual_transparencyLabel?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     transparencyTitle?: string | null;
+    bilingual_transparencyTitle?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     transparencyText?: string | null;
+    bilingual_transparencyText?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     transparencyPanel?: string | null;
+    bilingual_transparencyPanel?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     transparencyItems?:
       | {
           value?: string | null;
+          bilingual_value?: {
+            ka?: string | null;
+            en?: string | null;
+          };
           id?: string | null;
         }[]
       | null;
@@ -982,6 +1600,10 @@ export interface Homepage {
           value?:
             | {
                 value?: string | null;
+                bilingual_value?: {
+                  ka?: string | null;
+                  en?: string | null;
+                };
                 id?: string | null;
               }[]
             | null;
@@ -989,28 +1611,80 @@ export interface Homepage {
         }[]
       | null;
     progressLabel?: string | null;
+    bilingual_progressLabel?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     progressTitle?: string | null;
+    bilingual_progressTitle?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     phase?: string | null;
+    bilingual_phase?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     updated?: string | null;
+    bilingual_updated?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     newsLabel?: string | null;
+    bilingual_newsLabel?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     newsTitle?: string | null;
+    bilingual_newsTitle?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     read?: string | null;
+    bilingual_read?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     sample?: string | null;
   };
   testimonialsCopy?: {
     title?: string | null;
+    bilingual_title?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     intro?: string | null;
+    bilingual_intro?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     label?: string | null;
+    bilingual_label?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     placeholder?: string | null;
     quotes?:
       | {
           value?: string | null;
+          bilingual_value?: {
+            ka?: string | null;
+            en?: string | null;
+          };
           id?: string | null;
         }[]
       | null;
     note?: string | null;
     previous?: string | null;
+    bilingual_previous?: {
+      ka?: string | null;
+      en?: string | null;
+    };
     next?: string | null;
+    bilingual_next?: {
+      ka?: string | null;
+      en?: string | null;
+    };
   };
   previewNotice?: string | null;
   updatedAt?: string | null;
@@ -1023,13 +1697,37 @@ export interface Homepage {
 export interface AboutSelect<T extends boolean = true> {
   migrationSource?: T;
   title?: T;
+  bilingual_title?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   content?: T;
+  bilingual_content?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   image?: T;
   seo?:
     | T
     | {
         title?: T;
+        bilingual_title?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         description?: T;
+        bilingual_description?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         image?: T;
       };
   paragraphs?:
@@ -1049,10 +1747,22 @@ export interface AboutSelect<T extends boolean = true> {
 export interface SiteSettingsSelect<T extends boolean = true> {
   migrationSource?: T;
   companyName?: T;
+  bilingual_companyName?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   phone?: T;
   telephoneHref?: T;
   email?: T;
   address?: T;
+  bilingual_address?:
+    | T
+    | {
+        ka?: T;
+        en?: T;
+      };
   facebook?: T;
   instagram?: T;
   logo?: T;
@@ -1062,17 +1772,59 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | T
     | {
         company?: T;
+        bilingual_company?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         short?: T;
+        bilingual_short?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         second?: T;
+        bilingual_second?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         nav?:
           | T
           | {
               value?: T;
+              bilingual_value?:
+                | T
+                | {
+                    ka?: T;
+                    en?: T;
+                  };
               id?: T;
             };
         contact?: T;
+        bilingual_contact?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         explore?: T;
+        bilingual_explore?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         eyebrow?: T;
+        bilingual_eyebrow?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         slides?:
           | T
           | {
@@ -1080,33 +1832,111 @@ export interface SiteSettingsSelect<T extends boolean = true> {
                 | T
                 | {
                     value?: T;
+                    bilingual_value?:
+                      | T
+                      | {
+                          ka?: T;
+                          en?: T;
+                        };
                     id?: T;
                   };
               id?: T;
             };
         overview?: T;
+        bilingual_overview?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         description?: T;
+        bilingual_description?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         demo?: T;
         footerText?: T;
+        bilingual_footerText?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         footerTitles?:
           | T
           | {
               value?: T;
+              bilingual_value?:
+                | T
+                | {
+                    ka?: T;
+                    en?: T;
+                  };
               id?: T;
             };
         footerLinks?:
           | T
           | {
               value?: T;
+              bilingual_value?:
+                | T
+                | {
+                    ka?: T;
+                    en?: T;
+                  };
               id?: T;
             };
         contactNote?: T;
+        bilingual_contactNote?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         rights?: T;
+        bilingual_rights?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         pause?: T;
+        bilingual_pause?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         play?: T;
+        bilingual_play?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         next?: T;
+        bilingual_next?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         previous?: T;
+        bilingual_previous?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         menu?: T;
+        bilingual_menu?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;
@@ -1122,8 +1952,26 @@ export interface HomepageSelect<T extends boolean = true> {
     | T
     | {
         processLabel?: T;
+        bilingual_processLabel?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         processTitle?: T;
+        bilingual_processTitle?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         processIntro?: T;
+        bilingual_processIntro?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         stages?:
           | T
           | {
@@ -1131,38 +1979,128 @@ export interface HomepageSelect<T extends boolean = true> {
                 | T
                 | {
                     value?: T;
+                    bilingual_value?:
+                      | T
+                      | {
+                          ka?: T;
+                          en?: T;
+                        };
                     id?: T;
                   };
               id?: T;
             };
         servicesLabel?: T;
+        bilingual_servicesLabel?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         servicesTitle?: T;
+        bilingual_servicesTitle?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         categories?:
           | T
           | {
               value?: T;
+              bilingual_value?:
+                | T
+                | {
+                    ka?: T;
+                    en?: T;
+                  };
               id?: T;
             };
         serviceDescriptions?:
           | T
           | {
               value?: T;
+              bilingual_value?:
+                | T
+                | {
+                    ka?: T;
+                    en?: T;
+                  };
               id?: T;
             };
         portfolioLabel?: T;
+        bilingual_portfolioLabel?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         portfolioTitle?: T;
+        bilingual_portfolioTitle?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         demo?: T;
         all?: T;
+        bilingual_all?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         preview?: T;
+        bilingual_preview?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         close?: T;
+        bilingual_close?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         transparencyLabel?: T;
+        bilingual_transparencyLabel?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         transparencyTitle?: T;
+        bilingual_transparencyTitle?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         transparencyText?: T;
+        bilingual_transparencyText?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         transparencyPanel?: T;
+        bilingual_transparencyPanel?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         transparencyItems?:
           | T
           | {
               value?: T;
+              bilingual_value?:
+                | T
+                | {
+                    ka?: T;
+                    en?: T;
+                  };
               id?: T;
             };
         transparencyNote?: T;
@@ -1173,35 +2111,119 @@ export interface HomepageSelect<T extends boolean = true> {
                 | T
                 | {
                     value?: T;
+                    bilingual_value?:
+                      | T
+                      | {
+                          ka?: T;
+                          en?: T;
+                        };
                     id?: T;
                   };
               id?: T;
             };
         progressLabel?: T;
+        bilingual_progressLabel?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         progressTitle?: T;
+        bilingual_progressTitle?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         phase?: T;
+        bilingual_phase?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         updated?: T;
+        bilingual_updated?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         newsLabel?: T;
+        bilingual_newsLabel?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         newsTitle?: T;
+        bilingual_newsTitle?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         read?: T;
+        bilingual_read?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         sample?: T;
       };
   testimonialsCopy?:
     | T
     | {
         title?: T;
+        bilingual_title?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         intro?: T;
+        bilingual_intro?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         label?: T;
+        bilingual_label?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         placeholder?: T;
         quotes?:
           | T
           | {
               value?: T;
+              bilingual_value?:
+                | T
+                | {
+                    ka?: T;
+                    en?: T;
+                  };
               id?: T;
             };
         note?: T;
         previous?: T;
+        bilingual_previous?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
         next?: T;
+        bilingual_next?:
+          | T
+          | {
+              ka?: T;
+              en?: T;
+            };
       };
   previewNotice?: T;
   updatedAt?: T;

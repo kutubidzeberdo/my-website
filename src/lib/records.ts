@@ -1,6 +1,6 @@
 import type {GalleryPhoto} from './gallery';
 export type ProjectRecord = {
- cmsID?:number;statusCode:'ongoing'|'completed'|'planned'; id:string; name:{ka:string;en:string}; category:number; status:{ka:string;en:string}; image:string; description:{ka:string;en:string}; progress?:number; progressVerified?:boolean; phase?:{ka:string;en:string};
+ cmsID?:number;statusCode:'ongoing'|'completed'|'planned'; id:string; name:{ka:string;en:string}; category:number; status:{ka:string;en:string}; image:string; description:{ka:string;en:string}; progress?:number; phase?:{ka:string;en:string};
  location?:string; updatedAt?:string; timeline?:{title:string;date?:string}[]; gallery?:GalleryPhoto[]; youtubeId?:string; beforeAfter?:{before:string;after:string}; categoryTitle?:string;content?:any;videoURL?:string;seo?:any;aliases?:string[];budget?:string; client?:string; contractor?:string; investment?:string; area?:string;
 };
 export type NewsRecord={cmsID?:number;id:string;title:{ka:string;en:string};body:{ka:string;en:string};image:string;date:string;gallery?:GalleryPhoto[];youtubeId?:string;content?:any;videoURL?:string;seo?:any;aliases?:string[]};

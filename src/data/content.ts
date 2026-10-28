@@ -21,7 +21,7 @@ export const content = {
   },
   en: {
     company: 'Adjara Project Management Company', short: 'Adjara Project', second: 'Management Company',
-    nav: ['Home', 'About the company', 'Projects', 'სიახლეები', 'Contact'],
+    nav: ['Home', 'About Us', 'Projects', 'News', 'Contact'],
     contact: 'Get in touch', explore: 'Explore projects', eyebrow: 'INFRASTRUCTURE FOR A BETTER FUTURE',
     slides: [
       ['Batumi Arena', 'Sports infrastructure and a space for new possibilities.'],
@@ -35,5 +35,5 @@ export const content = {
     contactNote: 'ლ. გუდიაშვილის ქუჩა. N8', rights: 'All rights reserved.', pause: 'Pause slideshow', play: 'Play slideshow', next: 'Next slide', previous: 'Previous slide', menu: 'Menu',
   },
 };
-content.en = {...content.ka};
+
 export const slideImages = ['/images/arena.jpg', '/images/mountains.jpg', '/images/infrastructure.jpg', '/images/construction.jpg'];

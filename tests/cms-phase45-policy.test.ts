@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {englishEditable,englishFields} from '../src/cms/translation-policy';
+import {bilingualData} from '../src/cms/bilingual';
+import type {Field} from 'payload';
+assert.deepEqual(englishFields.news,['title','summary','content']);assert.equal(englishFields.projects.length,10);
+for(const entity of ['news','projects','slides','testimonials','statistics','about','project-categories','media'])for(const field of ['slug','image','gallery','status','progress','order','active','publishedAt','email','phone'])assert.equal(englishEditable(entity,[field]),false,entity+'.'+field);
+assert.equal(englishEditable('news',['seo','title']),false);assert.equal(englishEditable('projects',['seo','title']),false);assert.equal(englishEditable('media',['title']),false);assert.equal(englishEditable('homepage',['sections','metrics','value','value']),false);assert.equal(englishEditable('homepage',['sections','stages','value','value']),true);assert.equal(englishEditable('site-settings',['address']),true);assert.equal(englishEditable('users',['title']),false);
+const fields:Field[]=[{type:'group',label:false,fields:[{name:'seo',type:'group',fields:[{name:'bilingual_title',type:'group',virtual:true,fields:[]}]}]}];
+const data:any={seo:{bilingual_title:{ka:'ქართული'}}};assert.ok(bilingualData(data,fields));assert.deepEqual(data,{seo:{title:{ka:'ქართული'}}});assert.equal(Object.hasOwn(data.seo.title,'en'),false);
+const clear:any={seo:{bilingual_title:{en:''}}};bilingualData(clear,fields);assert.deepEqual(clear,{seo:{title:{en:''}}});
+const empty:any={seo:{title:{ka:'stored',en:'preserved'},bilingual_title:{}}};assert.equal(bilingualData(empty,fields),false);assert.equal(empty.seo.title.en,'preserved');
+console.log('PASS exact translation policies and omission-safe locale writes preserve unsubmitted English values');
