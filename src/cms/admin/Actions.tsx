@@ -1,13 +1,19 @@
 'use client';
-import {FormSubmit,useConfig,useDocumentInfo,useForm,useFormModified,useTranslation} from '@payloadcms/ui';
+import {FormSubmit,useUploadEdits,useConfig,useDocumentInfo,useForm,useFormModified,useTranslation} from '@payloadcms/ui';
 /** One native form submission sends every locale in the same database transaction. */
 function DocumentAction({kind}:{kind:'publish'|'unpublish'|'draft'|'save'}){
- const doc=useDocumentInfo();const {submit}=useForm();const {config}=useConfig();const {i18n}=useTranslation();const modified=useFormModified();
+ const {uploadEdits}=useUploadEdits();const doc=useDocumentInfo();const {submit}=useForm();const {config}=useConfig();const {i18n}=useTranslation();const modified=useFormModified();
  if((kind==='publish'||kind==='unpublish')&&!doc.hasPublishPermission)return null;
  const labels={publish:{ka:'გამოქვეყნება',en:'Publish'},unpublish:{ka:'გამოქვეყნების გაუქმება',en:'Unpublish'},draft:{ka:'მონახაზის შენახვა',en:'Save Draft'},save:{ka:'შენახვა',en:'Save'}};
  const action=async()=>{
   const path=doc.globalSlug?`/globals/${doc.globalSlug}`:`/${doc.collectionSlug}${doc.id?'/'+doc.id:''}`;
   const query=new URLSearchParams({locale:'all','fallback-locale':'none',depth:'0',bilingual:'true'});
+  // Keep native Media focal edits when constructing the bilingual save URL.
+  // Forward only focal coordinates; this save never requests cropping the main file.
+  if(doc.collectionSlug==='media'&&uploadEdits?.focalPoint){
+   query.set('uploadEdits[focalPoint][x]',String(uploadEdits.focalPoint.x));
+   query.set('uploadEdits[focalPoint][y]',String(uploadEdits.focalPoint.y));
+  }
   if(kind==='draft')query.set('draft','true');
   if(kind==='publish')query.set('publishAllLocales','true');
   if(kind==='unpublish')query.set('unpublishAllLocales','true');

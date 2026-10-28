@@ -5,7 +5,8 @@ import type {DefaultCellComponentProps} from 'payload';
 export function MediaPreview({rowData, collectionSlug}: DefaultCellComponentProps) {
  const {isInDrawer, onSelect, onBulkSelect} = useListDrawerContext();
  const {selected, setSelection} = useSelection();
- const image = rowData.sizes?.thumbnail?.url || rowData.url;
+ const source = rowData.sizes?.thumbnail?.url || rowData.url;
+ const image = source && rowData.updatedAt ? `${source}${source.includes('?')?'&':'?'}v=${encodeURIComponent(rowData.updatedAt)}` : source;
  const preview = image ? <img src={image} width={90} height={64} style={{objectFit:'cover',borderRadius:8}} alt={rowData.alt || rowData.filename || ''}/> : <span>—</span>;
  if (!isInDrawer || (!onSelect && !onBulkSelect)) return preview;
  const bulk = !onSelect && !!onBulkSelect;

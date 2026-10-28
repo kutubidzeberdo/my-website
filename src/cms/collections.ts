@@ -1,4 +1,5 @@
 import path from 'node:path';
+import {cardSize} from './image-sizes';
 import {publicAssetRead} from './public-assets';
 import {prepareSlug,retainSlug} from './slug';
 import {protectSharedMedia} from './media-usage';
@@ -37,7 +38,7 @@ export const Slides=managed('slides','სლაიდი','მთავარი
 export const Testimonials=managed('testimonials','გამოხმაურება','კლიენტების გამოხმაურებები',[text('title','სახელი',true),text('position','პოზიცია / ორგანიზაცია'),{name:'quote',type:'textarea',label:'გამოხმაურება',localized:true,validate:(v:unknown,{req}:any)=>req.locale==='en'||typeof v==='string'&&!!v.trim()||'სავალდებულო ველი',maxLength:10000},image('portrait','პორტრეტი'),text('notice','საილუსტრაციო შენიშვნა'),demonstration,order,active]);
 export const Statistics=managed('statistics','მაჩვენებელი','სტატისტიკა',[text('title','დასახელება',true),{name:'value',type:'number',label:'რიცხვი',required:true},text('suffix','სუფიქსი'),order,active,demonstration]);
 export const Media: CollectionConfig={...managed('media','ფოტო','მედია ბიბლიოთეკა',[text('title','დასახელება'),text('alt','ალტერნატიული ტექსტი',true),text('caption','წარწერა'),{name:'sourceHash',type:'text',unique:true,index:true,admin:{readOnly:true,hidden:true}}]),
- upload:{staticDir:path.resolve('media'),mimeTypes:['image/jpeg','image/png','image/webp','image/gif','image/avif'],imageSizes:[{name:'thumbnail',width:400,height:300,position:'centre'}],adminThumbnail:'thumbnail',filesRequiredOnCreate:true},
+ upload:{staticDir:path.resolve('media'),mimeTypes:['image/jpeg','image/png','image/webp','image/gif','image/avif'],imageSizes:[{name:'thumbnail',width:400,height:300,position:'centre'},cardSize],adminThumbnail:'thumbnail',filesRequiredOnCreate:true},
  hooks:{beforeDelete:[protectSharedMedia],beforeOperation:[async ({req,operation})=>{
   if(!['create','update'].includes(operation)||!req.file)return;
   if(!req.context.cmsImport&&!permitted(req.user,'media',operation as 'create'|'update'))throw new APIError('თქვენ არ გაქვთ ფოტოს ატვირთვის უფლება',403);
