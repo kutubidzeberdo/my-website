@@ -13,6 +13,7 @@ import {retireObsoleteFields} from './src/cms/retired-fields';
 import {bilingualEditor} from './src/cms/bilingual';
 import { ka } from './src/cms/translations';
 import { gallery, video } from './src/cms/fields';
+import { postgresPoolConfig } from './src/cms/postgres-pool';
 
 if(!process.env.PAYLOAD_SECRET || !process.env.DATABASE_URL)throw new Error('CMS requires DATABASE_URL and PAYLOAD_SECRET in the local or encrypted runtime environment.');
 const serverURL=process.env.CMS_SERVER_URL||process.env.NEXT_PUBLIC_SITE_URL||'http://localhost:3000';
@@ -24,7 +25,7 @@ export default buildConfig({
  // Upstream language union omits Georgian; runtime supports custom dictionaries.
  i18n:{supportedLanguages:{ka,en},fallbackLanguage:'ka',translations:{ka:{lexical:ka.translations.lexical}}} as unknown as Config['i18n'],
  localization:{locales:[{label:'ქართული',code:'ka'},{label:'English',code:'en'}],defaultLocale:'ka',fallback:true},
- db:postgresAdapter({pool:{connectionString:process.env.DATABASE_URL},push:false,disableCreateDatabase:true,migrationDir:path.resolve('src/cms/migrations')}),
+ db:postgresAdapter({pool:postgresPoolConfig(process.env),push:false,disableCreateDatabase:true,migrationDir:path.resolve('src/cms/migrations')}),
  collections:[Users,Media,Categories,News,Projects,Slides,Testimonials,Statistics,AuditLogs],
  globals:[About,SiteSettings,Homepage],
  editor:professionalEditor,
