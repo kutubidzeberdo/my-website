@@ -47,11 +47,12 @@ try {
   async function submit(){release=undefined;await page.locator('button[type=submit]').click();await page.waitForFunction(()=>document.querySelector('button[type=submit]').disabled);while(!release)await new Promise(resolve=>setTimeout(resolve,10));}
   async function cleared(){for(const name of [...Object.keys(fields),'website'])assert.equal(await page.locator(`[name=${name}]`).inputValue(),'');assert.equal(await page.locator('.consent input').isChecked(),false);assert.equal(await page.locator('[aria-invalid=true]').count(),0);assert.equal(await page.locator('.field-error').count(),0);assert.equal(await page.locator('button[type=submit]').isEnabled(),true);}
   for(const width of [1440,390])for(const language of ['ka','en']) {
-    await page.setViewportSize({width,height:1000});await page.goto(base);await page.getByRole('button',{name:language.toUpperCase(),exact:true}).click();
+    await page.setViewportSize({width,height:1000});await page.emulateMedia({reducedMotion:width===390?'reduce':'no-preference'});await page.goto(base);await page.getByRole('button',{name:language.toUpperCase(),exact:true}).click();
     await page.locator('button[type=submit]:enabled').waitFor();
     const success=language==='ka'?'წარმატებით გაიგზავნა':'Successfully sent';
     // Trigger real validation first, then correct the inputs.
     await page.locator('button[type=submit]').click();assert.ok(await page.locator('.field-error').count());
+    await page.waitForFunction(()=>document.activeElement?.getAttribute('name')==='name');
     await fill();outcome='failure';const start=payloads.length;await submit();
     assert.equal(await page.getByText(success,{exact:true}).count(),0);
     // Multiple submit events while pending must not send multiple requests.
@@ -63,7 +64,21 @@ try {
     // Only an explicit second submission is made; no automatic retry.
     assert.equal(payloads.length,start+1);outcome='success';await submit();assert.equal(await page.getByText(success,{exact:true}).count(),0);
     release();await page.getByText(success,{exact:true}).waitFor();await cleared();
-    assert.equal(await page.getByText(success,{exact:true}).evaluate(el=>getComputedStyle(el).color),'rgb(22, 115, 59)');
+    const toast=page.locator('[data-sonner-toast][data-type=success]');
+    await page.waitForTimeout(400);
+    const appearance=await toast.evaluate(el=>{const style=getComputedStyle(el),rect=el.getBoundingClientRect(),host=el.closest('[data-sonner-toaster]');return {color:style.color,radius:style.borderRadius,shadow:style.boxShadow,transition:style.transitionDuration,x:host.dataset.xPosition,y:host.dataset.yPosition,position:getComputedStyle(host).position,center:rect.x+rect.width/2,viewport:innerWidth};});
+    const channels=appearance.color.match(/\d+/g).map(Number);assert.ok(channels[1]>channels[0]&&channels[1]>channels[2]);
+    assert.notEqual(appearance.radius,'0px');assert.notEqual(appearance.shadow,'none');assert.equal(await toast.locator('svg').count(),1);
+    assert.equal(appearance.position,'fixed');assert.equal(appearance.y,'top');assert.equal(appearance.x,width===390?'center':'right');
+    if(width===390){assert.ok(Math.abs(appearance.center-appearance.viewport/2)<1);assert.equal(appearance.transition,'0s');}
+    else assert.notEqual(appearance.transition,'0s');
+    assert.equal(await page.locator('form').getByText(success,{exact:true}).count(),0);
+    await page.screenshot({path:`/tmp/contact-toast-${language}-${width}.png`});
+    // The toast closes after about five seconds, including its short exit animation.
+    await toast.waitFor({state:'detached',timeout:6500});
+    await page.getByRole('button',{name:(language==='ka'?'EN':'KA'),exact:true}).click();
+    assert.equal(await page.locator('[data-sonner-toast]').count(),0);
+    await page.getByRole('button',{name:language.toUpperCase(),exact:true}).click();
     assert.equal(await page.locator('.contact-form').innerText().then(text=>text.includes('Gmail API')),false);
     assert.equal(payloads.length,start+2);
     // A new, deliberate submission gets a new key. Any 2xx, including empty 204, succeeds.
@@ -73,7 +88,7 @@ try {
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
   }
   assert.deepEqual(exceptions,[]);
-  console.log('PASS KA/EN desktop/mobile: confirmed 2xx and 204 show exact green success, clear all fields/errors/consent, and reset for a new submission.');
+  console.log('PASS KA/EN desktop/mobile: confirmed 2xx and 204 show exact green floating toast, clear all fields/errors/consent, and reset for a new submission. Toast position, icon, reduced motion, automatic dismissal and no revival after language change verified.');
   console.log('PASS failures preserve fields and error text; pending submissions hide success and prevent duplicate sends; no automatic retries.');
 } finally {
   await browser?.close();await new Promise(resolve=>server.close(resolve));
