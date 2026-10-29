@@ -6,10 +6,10 @@ import Header from './Header';
 import Footer from './Footer';
 import {PreviewNotice,ScrollToTop} from './PageUtilities';
 import type {Language} from '@/data/content';
-export default function InternalPage({children}:{children:ReactNode|((language:Language)=>ReactNode)}){
+export default function InternalPage({children,routeLanguage}:{children:ReactNode|((language:Language)=>ReactNode);routeLanguage?:Language}){
  const router=useRouter();
-  const [language,setLanguage]=useState<Language>('ka');const [ready,setReady]=useState(false);
- useEffect(()=>{if(localStorage.getItem('adjara-language')==='en')setLanguage('en');setReady(true);},[]);
+  const [language,setLanguage]=useState<Language>(routeLanguage||'ka');const [ready,setReady]=useState(false);
+ useEffect(()=>{if(routeLanguage)setLanguage(routeLanguage);else if(localStorage.getItem('adjara-language')==='en')setLanguage('en');setReady(true);},[routeLanguage]);
  useEffect(()=>{document.documentElement.lang=language;if(ready){localStorage.setItem('adjara-language',language);const changed=!document.cookie.split('; ').includes('adjara-language='+language);document.cookie='adjara-language='+language+'; Path=/; Max-Age=31536000; SameSite=Lax';if(changed)router.refresh();}},[language,ready,router]);
- return <PublicLanguage.Provider value={language}><div className="about-header"><Header language={language} onLanguageChange={setLanguage} internalPage/></div>{typeof children==='function'?children(language):children}<PreviewNotice/><Footer language={language}/><ScrollToTop/></PublicLanguage.Provider>;
+ return <PublicLanguage.Provider value={language}><div className="about-header"><Header language={language} onLanguageChange={next=>{if(routeLanguage)router.push(`/${next}/privacy`);else setLanguage(next);}} internalPage/></div>{typeof children==='function'?children(language):children}<PreviewNotice/><Footer language={language}/><ScrollToTop/></PublicLanguage.Provider>;
 }
