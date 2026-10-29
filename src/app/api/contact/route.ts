@@ -6,11 +6,18 @@ export const runtime = 'nodejs';
 const attempts = new Map<string, { count: number; expires: number }>();
 const LIMIT = 16 * 1024;
 const configured = gmailConfigured;
+function expectedOrigin(request: NextRequest): string | null {
+  // Behind App Platform's proxy nextUrl may contain the internal service origin.
+  // Use the same explicit public URL as Payload; never trust forwarded host headers.
+  const publicURL = process.env.CMS_SERVER_URL || process.env.NEXT_PUBLIC_SITE_URL;
+  if (!publicURL) return request.nextUrl.origin;
+  try { return new URL(publicURL).origin; } catch { return null; }
+}
 const submissions = new Map<string, {expires:number; fingerprint:string; pending:boolean; accepted:boolean}>();
 export function GET() { return NextResponse.json({ available: configured() }, { headers: { 'Cache-Control': 'no-store' } }); }
 export async function POST(request: NextRequest) {
   const origin = request.headers.get('origin');
-  if (!origin || origin !== request.nextUrl.origin) return NextResponse.json({ error: 'მოთხოვნა დაუშვებელია.' }, { status: 403 });
+  if (!origin || origin !== expectedOrigin(request)) return NextResponse.json({ error: 'მოთხოვნა დაუშვებელია.' }, { status: 403 });
   if (!request.headers.get('content-type')?.startsWith('application/json')) return NextResponse.json({ error: 'მონაცემების ფორმატი არასწორია.' }, { status: 415 });
   if (Number(request.headers.get('content-length')) > LIMIT) return NextResponse.json({ error: 'შეტყობინება ძალიან დიდია.' }, { status: 413 });
   // Trust a proxy-provided IP only when the hosting proxy is explicitly configured to overwrite this header.
