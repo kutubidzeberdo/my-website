@@ -1,4 +1,5 @@
 import {APIError,type CollectionConfig,type Field,type FieldHook,type GlobalConfig} from 'payload';
+import {adminTitle,adminTitleSelect} from './admin-title';
 import {englishEditable} from './translation-policy';
 import {uiLabel,adminEnglish} from './admin-labels';
 const prefix='bilingual_';
@@ -72,6 +73,7 @@ export function bilingualEditor(entity:CollectionConfig|GlobalConfig){
  const unwrap=({args,operation}:any)=>{if(operation==='delete')args.req.context.bilingualDeleting=true;if(bilingualData(args.data,entity.fields)&&args.req.locale!=='all')throw new APIError(args.req.i18n.language==='en'?'Save bilingual content with locale=all.':'ორენოვანი შინაარსი შეინახეთ locale=all რეჟიმში.',400);return args;};
  // Run before Payload fills omitted virtual groups from defaults/existing data.
  entity.hooks={...entity.hooks,beforeOperation:[unwrap,...(entity.hooks?.beforeOperation||[]) as any],afterRead:[...(entity.hooks?.afterRead||[]) as any,({doc,req}:any)=>req.query?.bilingual==='true'&&!req.context.bilingualRaw?editorResponse(doc,entity.fields):doc]};
+ if('labels' in entity&&entity.admin?.useAsTitle==='title')entity.hooks={...entity.hooks,beforeRead:[...(entity.hooks?.beforeRead||[]),adminTitle],beforeOperation:[adminTitleSelect,...(entity.hooks?.beforeOperation||[])]};
  entity.fields.unshift({name:'contentLanguageTabs',type:'ui',admin:{components:{Field:'/src/cms/admin/BilingualFields#ContentTabs'}}});
  const actions={PublishButton:'/src/cms/admin/Actions#PublishAction',UnpublishButton:'/src/cms/admin/Actions#UnpublishAction',SaveDraftButton:'/src/cms/admin/Actions#SaveDraftAction',SaveButton:'/src/cms/admin/Actions#SaveAction'};
  if('labels' in entity){const c=entity as CollectionConfig;c.admin={...c.admin,components:{...c.admin?.components,edit:{...c.admin?.components?.edit,...actions}}};}
