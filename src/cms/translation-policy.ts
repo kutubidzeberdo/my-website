@@ -1,13 +1,13 @@
 /** Explicit content semantics; these rules never change the stored schema/localization. */
 export const englishFields:Record<string,readonly string[]>={
- news:['title','summary','content'],
- projects:['title','summary','content','location','phase','budget','contractor','client','investment','area'],
+ news:['title','summary','content','seo.title','seo.description','gallery.caption'],
+ projects:['title','summary','content','location','phase','budget','contractor','client','investment','area','seo.title','seo.description','gallery.caption'],
  slides:['title','subtitle','description','buttonText'],
  testimonials:['title','position','quote'],
  statistics:['title','suffix'],
  about:['title','content','seo.title','seo.description'],
  'project-categories':['title'],
- media:['alt','caption'],
+ media:[],
 };
 export function englishEditable(entity:string,path:readonly string[]):boolean{
  const key=path.join('.');

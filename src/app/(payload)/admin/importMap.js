@@ -1,8 +1,9 @@
 import { ContentTabs as ContentTabs_142b8cab4d4a148200b7a103e31835b8 } from '../../../../src/cms/admin/BilingualFields'
 import { LocalizedField as LocalizedField_142b8cab4d4a148200b7a103e31835b8 } from '../../../../src/cms/admin/BilingualFields'
-import { FileSizeCell as FileSizeCell_5e0d912ab61022778cae5c181b85e277 } from '../../../../src/cms/admin/Cells'
-import { GeorgianOnly as GeorgianOnly_142b8cab4d4a148200b7a103e31835b8 } from '../../../../src/cms/admin/BilingualFields'
 import { MediaPreview as MediaPreview_7953a626217c93eced8422b949c6af27 } from '../../../../src/cms/admin/MediaPreview'
+import { GeorgianOnly as GeorgianOnly_142b8cab4d4a148200b7a103e31835b8 } from '../../../../src/cms/admin/BilingualFields'
+import { FileSizeCell as FileSizeCell_5e0d912ab61022778cae5c181b85e277 } from '../../../../src/cms/admin/Cells'
+import { MediaBatchImages as MediaBatchImages_0520dbaa066397b743a1fc315109acfd } from '../../../../src/cms/admin/BatchImages'
 import { PublishAction as PublishAction_c5f6242a97fcac03405a61441e94be0a } from '../../../../src/cms/admin/Actions'
 import { SaveAction as SaveAction_c5f6242a97fcac03405a61441e94be0a } from '../../../../src/cms/admin/Actions'
 import { SaveDraftAction as SaveDraftAction_c5f6242a97fcac03405a61441e94be0a } from '../../../../src/cms/admin/Actions'
@@ -12,6 +13,7 @@ import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { LexicalDiffComponent as LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { BlocksFeatureClient as BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { GalleryField as GalleryField_0520dbaa066397b743a1fc315109acfd } from '../../../../src/cms/admin/BatchImages'
 import { GalleryPreview as GalleryPreview_020c2fa2944ee8fe4ca67da2ea66e5c0 } from '../../../../src/cms/editor/Previews'
 import { BlockEditor as BlockEditor_617a0d50a695a8db8515a8fff5f60cf4 } from '../../../../src/cms/editor/BlockEditor'
 import { VideoPreview as VideoPreview_020c2fa2944ee8fe4ca67da2ea66e5c0 } from '../../../../src/cms/editor/Previews'
@@ -38,6 +40,7 @@ import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997e
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { AccessibilityFeatureClient as AccessibilityFeatureClient_80b9acb106976401bd19c8ab8beaf3fc } from '../../../../src/cms/editor/AccessibilityFeature.client'
+import { TranslationArray as TranslationArray_142b8cab4d4a148200b7a103e31835b8 } from '../../../../src/cms/admin/BilingualFields'
 import { EditorialList as EditorialList_981a8a0a0954bb0a66390875d1f15de5 } from '../../../../src/cms/admin/ProjectControls'
 import { ProjectStatusCell as ProjectStatusCell_5e0d912ab61022778cae5c181b85e277 } from '../../../../src/cms/admin/Cells'
 import { ProjectStatus as ProjectStatus_981a8a0a0954bb0a66390875d1f15de5 } from '../../../../src/cms/admin/ProjectControls'
@@ -45,7 +48,6 @@ import { ProgressCell as ProgressCell_5e0d912ab61022778cae5c181b85e277 } from '.
 import { ProgressPreview as ProgressPreview_981a8a0a0954bb0a66390875d1f15de5 } from '../../../../src/cms/admin/ProjectControls'
 import { ProjectList as ProjectList_981a8a0a0954bb0a66390875d1f15de5 } from '../../../../src/cms/admin/ProjectControls'
 import { ActiveCell as ActiveCell_5e0d912ab61022778cae5c181b85e277 } from '../../../../src/cms/admin/Cells'
-import { TranslationArray as TranslationArray_142b8cab4d4a148200b7a103e31835b8 } from '../../../../src/cms/admin/BilingualFields'
 import { Navigation as Navigation_f43be33db7dadb0ea91af79032c75fb0 } from '../../../../src/cms/admin/Navigation'
 import { BrandIcon as BrandIcon_87a78ea4f10a8919c49248ed0ff0f976 } from '../../../../src/cms/admin/Brand'
 import { Brand as Brand_87a78ea4f10a8919c49248ed0ff0f976 } from '../../../../src/cms/admin/Brand'
@@ -60,9 +62,10 @@ import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } f
 export const importMap = {
   "/src/cms/admin/BilingualFields#ContentTabs": ContentTabs_142b8cab4d4a148200b7a103e31835b8,
   "/src/cms/admin/BilingualFields#LocalizedField": LocalizedField_142b8cab4d4a148200b7a103e31835b8,
-  "/src/cms/admin/Cells#FileSizeCell": FileSizeCell_5e0d912ab61022778cae5c181b85e277,
-  "/src/cms/admin/BilingualFields#GeorgianOnly": GeorgianOnly_142b8cab4d4a148200b7a103e31835b8,
   "/src/cms/admin/MediaPreview#MediaPreview": MediaPreview_7953a626217c93eced8422b949c6af27,
+  "/src/cms/admin/BilingualFields#GeorgianOnly": GeorgianOnly_142b8cab4d4a148200b7a103e31835b8,
+  "/src/cms/admin/Cells#FileSizeCell": FileSizeCell_5e0d912ab61022778cae5c181b85e277,
+  "/src/cms/admin/BatchImages#MediaBatchImages": MediaBatchImages_0520dbaa066397b743a1fc315109acfd,
   "/src/cms/admin/Actions#PublishAction": PublishAction_c5f6242a97fcac03405a61441e94be0a,
   "/src/cms/admin/Actions#SaveAction": SaveAction_c5f6242a97fcac03405a61441e94be0a,
   "/src/cms/admin/Actions#SaveDraftAction": SaveDraftAction_c5f6242a97fcac03405a61441e94be0a,
@@ -72,6 +75,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#LexicalDiffComponent": LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/client#BlocksFeatureClient": BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "/src/cms/admin/BatchImages#GalleryField": GalleryField_0520dbaa066397b743a1fc315109acfd,
   "/src/cms/editor/Previews#GalleryPreview": GalleryPreview_020c2fa2944ee8fe4ca67da2ea66e5c0,
   "/src/cms/editor/BlockEditor#BlockEditor": BlockEditor_617a0d50a695a8db8515a8fff5f60cf4,
   "/src/cms/editor/Previews#VideoPreview": VideoPreview_020c2fa2944ee8fe4ca67da2ea66e5c0,
@@ -98,6 +102,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "/src/cms/editor/AccessibilityFeature.client#AccessibilityFeatureClient": AccessibilityFeatureClient_80b9acb106976401bd19c8ab8beaf3fc,
+  "/src/cms/admin/BilingualFields#TranslationArray": TranslationArray_142b8cab4d4a148200b7a103e31835b8,
   "/src/cms/admin/ProjectControls#EditorialList": EditorialList_981a8a0a0954bb0a66390875d1f15de5,
   "/src/cms/admin/Cells#ProjectStatusCell": ProjectStatusCell_5e0d912ab61022778cae5c181b85e277,
   "/src/cms/admin/ProjectControls#ProjectStatus": ProjectStatus_981a8a0a0954bb0a66390875d1f15de5,
@@ -105,7 +110,6 @@ export const importMap = {
   "/src/cms/admin/ProjectControls#ProgressPreview": ProgressPreview_981a8a0a0954bb0a66390875d1f15de5,
   "/src/cms/admin/ProjectControls#ProjectList": ProjectList_981a8a0a0954bb0a66390875d1f15de5,
   "/src/cms/admin/Cells#ActiveCell": ActiveCell_5e0d912ab61022778cae5c181b85e277,
-  "/src/cms/admin/BilingualFields#TranslationArray": TranslationArray_142b8cab4d4a148200b7a103e31835b8,
   "/src/cms/admin/Navigation#Navigation": Navigation_f43be33db7dadb0ea91af79032c75fb0,
   "/src/cms/admin/Brand#BrandIcon": BrandIcon_87a78ea4f10a8919c49248ed0ff0f976,
   "/src/cms/admin/Brand#Brand": Brand_87a78ea4f10a8919c49248ed0ff0f976,

@@ -1,5 +1,6 @@
 'use client';
 import {createContext,useContext,useMemo,useState,useEffect} from 'react';
+import {GalleryField} from './BatchImages';
 import {adminEnglish} from '../admin-labels';
 import {RenderFields,ArrayField,useFormFields,useFieldPath,useTranslation,useConfig,ConfigProvider,TranslationProvider} from '@payloadcms/ui';
 import {getTranslation} from '@payloadcms/translations';
@@ -8,8 +9,8 @@ const LanguageContext=createContext<{language:'ka'|'en';setLanguage:(value:'ka'|
 /** The server localization config stays enabled. Only the native admin locale widget is disabled. */
 const FieldScope=createContext<'ka'|'en'|'both'>('both');
 const InterfaceContext=createContext<{change:(language:'ka'|'en')=>void}>({change:()=>{}});
-export function AdminLanguages({children,dictionaries,cookiePrefix}:{children:React.ReactNode;dictionaries:Record<string,{translations:any;dateFNSKey:any}>;cookiePrefix:string}){
- const [language,setLanguage]=useState<'ka'|'en'>('ka');const {config}=useConfig();const native=useTranslation();const [interfaceLanguage,setInterfaceLanguage]=useState(native.i18n.language==='en'?'en':'ka');
+export function AdminLanguages({children,dictionaries,cookiePrefix,initialLanguage}:{initialLanguage?:'ka'|'en';children:React.ReactNode;dictionaries:Record<string,{translations:any;dateFNSKey:any}>;cookiePrefix:string}){
+ const [language,setLanguage]=useState<'ka'|'en'>('ka');const {config}=useConfig();const native=useTranslation();const [interfaceLanguage,setInterfaceLanguage]=useState(initialLanguage||'ka');
  const interfaceConfig=useMemo(()=>({...config,localization:false as const}),[config]);
  const value=useMemo(()=>({language,setLanguage}),[language]);
  const change=(next:'ka'|'en')=>{document.cookie=`${cookiePrefix}-lng=${next}; Path=/; Max-Age=31536000; SameSite=Lax`;setInterfaceLanguage(next);};
@@ -32,8 +33,9 @@ export function LocalizedField({field,path,schemaPath,permissions,readOnly}:Grou
 /** English edits row text, never the shared row structure, IDs or ordering. */
 export function TranslationArray(props:ArrayFieldClientProps){
  const {field,path,schemaPath,permissions,readOnly}=props;const livePath=useFieldPath()||path;const {language}=useContext(LanguageContext);const scope=useContext(FieldScope);const {i18n}=useTranslation();
+ const Rows=field.name==='gallery'?GalleryField:ArrayField;
  const rows=useFormFields(([fields])=>fields[livePath]?.rows)||[];
- return <>{scope!=='en'&&<div hidden={scope==='both'&&language!=='ka'}><FieldScope.Provider value="ka"><ArrayField {...props} forceRender/></FieldScope.Provider></div>}{scope!=='ka'&&<div hidden={scope==='both'&&language!=='en'}><FieldScope.Provider value="en">{rows.length>0&&<section className="pmc-translation-rows">{field.label&&<h3>{getTranslation(field.label,i18n)}</h3>}{rows.map((row,index)=><div className="pmc-translation-row" key={row.id}><RenderFields forceRender fields={field.fields.filter(f=>!f.admin?.custom?.pmcGeorgianOnly&&(!('name' in f)||f.name!=='id'))} parentPath={`${livePath}.${index}`} parentSchemaPath={schemaPath||path} parentIndexPath="" permissions={permissions===true?true:permissions?.fields??true} readOnly={readOnly}/></div>)}</section>}</FieldScope.Provider></div>}</>;
+ return <>{scope!=='en'&&<div hidden={scope==='both'&&language!=='ka'}><FieldScope.Provider value="ka"><Rows {...props} forceRender/></FieldScope.Provider></div>}{scope!=='ka'&&<div hidden={scope==='both'&&language!=='en'}><FieldScope.Provider value="en">{rows.length>0&&<section className="pmc-translation-rows">{field.label&&<h3>{getTranslation(field.label,i18n)}</h3>}{rows.map((row,index)=><div className="pmc-translation-row" key={row.id}><RenderFields forceRender fields={field.fields.filter(f=>!f.admin?.custom?.pmcGeorgianOnly&&(!('name' in f)||f.name!=='id'))} parentPath={`${livePath}.${index}`} parentSchemaPath={schemaPath||path} parentIndexPath="" permissions={permissions===true?true:permissions?.fields??true} readOnly={readOnly}/></div>)}</section>}</FieldScope.Provider></div>}</>;
 }
 
 export function useAdminLabel(){const {i18n}=useTranslation();return (value:string)=>i18n.language==='en'?(adminEnglish[value]||value):value;}

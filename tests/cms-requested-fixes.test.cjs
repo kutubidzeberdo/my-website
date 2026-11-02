@@ -1,0 +1,7 @@
+const {test}=require('node:test');const assert=require('node:assert/strict');const fs=require('node:fs');const ts=require('typescript');
+function load(file){const m={exports:{}};new Function('module','exports',ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText)(m,m.exports);return m.exports;}
+const {mediaTitle,dataTitle}=load('src/cms/media-title.ts');
+test('Media titles preserve Unicode names and explicit meaningful titles',()=>{assert.equal(mediaTitle('ბათუმის სტადიონი.jpg'),'ბათუმის სტადიონი');assert.equal(mediaTitle('photo.original.png'),'photo.original');assert.equal(mediaTitle('photo'),'photo');assert.equal(dataTitle('  '),false);assert.equal(dataTitle('Custom title'),true);});
+const {resolveLocalized}=load('src/lib/localization.ts');
+test('English fallback preserves zero, false and original untranslated fields',()=>{const original={title:{ka:'სათაური',en:'Title'},location:{ka:'ბათუმი',en:' '},enabled:{ka:true,en:false},progress:{ka:12,en:0}};assert.deepEqual(resolveLocalized(original,'en'),{title:'Title',location:'ბათუმი',enabled:false,progress:0});assert.equal(original.location.en,' ');});
+test('Explicit SEO image precedes featured images for both detail types',()=>{for(const [type,v]of [['projects','p'],['news','n']]){const source=fs.readFileSync(`src/app/(frontend)/${type}/[slug]/page.tsx`,'utf8');assert.ok(source.includes(`mediaURL(await publicMedia(),${v}.seo?.image)||(${v}.image.startsWith`));assert.ok(source.includes(`${v}.seo?.title||`));}});

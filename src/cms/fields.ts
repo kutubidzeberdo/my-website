@@ -1,11 +1,11 @@
-import type { Field, UploadField } from 'payload';
+import type { Field, TextField, UploadField } from 'payload';
 import {allowedVideoURL} from './video';
-export const text = (name: string, label: string, required=false, localized=true): Field => ({name,type:'text',label,required:required&&!localized,localized,maxLength:1000,validate:required&&localized?((value:unknown,{req}:any)=>req.locale==='en'||typeof value==='string'&&!!value.trim()||(req.i18n?.language==='en'?'Required Field':'სავალდებულო ველი')):undefined});
+export const text = (name: string, label: string, required=false, localized=true): TextField => ({name,type:'text',label,required:required&&!localized,localized,maxLength:1000,validate:required&&localized?((value:unknown,{req}:any)=>req.locale==='en'||typeof value==='string'&&!!value.trim()||(req.i18n?.language==='en'?'Required Field':'სავალდებულო ველი')):undefined});
 export const image = (name='image',label='ფოტო'): UploadField => ({name,type:'upload',relationTo:'media',label});
 export const order: Field = {name:'order',type:'number',label:'რიგი',defaultValue:0,index:true};
 export const active: Field = {name:'active',type:'checkbox',label:'აქტიური',defaultValue:true,index:true,admin:{components:{Cell:'/src/cms/admin/Cells#ActiveCell'}}};
 export const sourceKey: Field = {name:'sourceKey',type:'text',unique:true,index:true,admin:{readOnly:true,hidden:true,position:'sidebar'},access:{create:()=>false,update:()=>false}};
-export const gallery: Field = {name:'gallery',type:'array',label:'ფოტოგალერეა',labels:{singular:'ფოტო',plural:'ფოტოები'},fields:[{...image('image','ფოტო'),required:true},text('caption','წარწერა'),text('alt','ალტერნატიული ტექსტი')]};
+export const gallery: Field = {name:'gallery',type:'array',label:'ფოტოგალერეა',labels:{singular:'ფოტო',plural:'ფოტოები'},admin:{components:{Field:'/src/cms/admin/BatchImages#GalleryField'}},fields:[{...image('image','ფოტო'),required:true},text('caption','წარწერა'),{...text('alt','ალტერნატიული ტექსტი'),admin:{hidden:true}}]};
 export const video:Field={name:'videoURL',type:'text',label:'ვიდეოს ბმული (YouTube / Vimeo)',validate:(value:unknown)=>allowedVideoURL(value)||'გამოიყენეთ YouTube ან Vimeo HTTPS ბმული'};
 export const seo: Field = {name:'seo',type:'group',label:'SEO',fields:[text('title','SEO სათაური'),{name:'description',type:'textarea',label:'SEO აღწერა',localized:true,maxLength:500},image('image','Open Graph ფოტო')]};
 export const rich: Field = {name:'content',type:'richText',label:'სრული შინაარსი',localized:true,admin:{description:'ინსტრუმენტების პანელი: ტექსტი, ფოტო, ვიდეო და გალერეა. სწრაფი ჩასმა: /; გაუქმება: Ctrl/⌘+Z.'}};
