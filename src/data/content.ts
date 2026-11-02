@@ -17,7 +17,7 @@ export const content = {
     footerTitles: ['ნავიგაცია', 'ინფორმაცია', 'კონტაქტი'],
     footerLinks: ['შესყიდვები', 'გამჭვირვალობა', 'პარტნიორები და კარიერა'],
     contactNote: 'ლ. გუდიაშვილის ქუჩა. N8',
-    rights: 'ყველა უფლება დაცულია.', pause: 'სლაიდების შეჩერება', play: 'სლაიდების გაშვება', next: 'შემდეგი სლაიდი', previous: 'წინა სლაიდი', menu: 'მენიუ',
+    rights: 'ყველა უფლება დაცულია', pause: 'სლაიდების შეჩერება', play: 'სლაიდების გაშვება', next: 'შემდეგი სლაიდი', previous: 'წინა სლაიდი', menu: 'მენიუ',
   },
   en: {
     company: 'Adjara Project Management Company', short: 'Adjara Project', second: 'Management Company',

@@ -39,11 +39,13 @@ test('Both policy routes render their URL language and localized contact details
 test('Footer points each language at its corresponding public policy',()=>{
   const Footer=load('src/components/Footer.tsx',{
     'next/image':()=>null,'./CMSContext':{useCMS:()=>({settings:{...settings,copy:{nav:[],footerTitles:[]}}})},
-    '@/data/content':{content:{en:{nav:[],footerTitles:[]}}},
+    '@/data/content':load('src/data/content.ts'),
   }).default;
   for(const language of ['ka','en']) {
     const html=renderToStaticMarkup(require('react').createElement(Footer,{language}));
     assert.ok(html.includes(`href="/${language}/privacy"`));
+    assert.ok(html.includes(language==='en'?'All rights reserved.':'ყველა უფლება დაცულია'));
+    assert.ok(!html.includes(language==='en'?'ყველა უფლება დაცულია':'All rights reserved.'));
     assert.ok(html.includes(privacy[language].title));
   }
 });

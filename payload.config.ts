@@ -1,5 +1,6 @@
 import path from 'node:path';
 import sharp from 'sharp';
+import {mediaUploadOptions} from './src/cms/upload-options';
 import { buildConfig, type Config } from 'payload';
 import { postgresAdapter } from '@payloadcms/db-postgres';
 import { professionalEditor } from './src/cms/editor/config';
@@ -30,7 +31,7 @@ export default buildConfig({
  globals:[About,SiteSettings,Homepage],
  editor:professionalEditor,
  sharp,
- upload:{limits:{fileSize:10*1024*1024}},
+ upload:mediaUploadOptions,
  typescript:{outputFile:path.resolve('src/cms/payload-types.ts')},
  plugins:process.env.S3_BUCKET?[s3Storage({collections:{media:true},bucket:process.env.S3_BUCKET,config:{region:process.env.S3_REGION||'us-east-1',endpoint:process.env.S3_ENDPOINT,credentials:{accessKeyId:process.env.S3_ACCESS_KEY_ID!,secretAccessKey:process.env.S3_SECRET_ACCESS_KEY!}}})]:[],
  // No development email logger: reset tokens must never be emitted into logs.

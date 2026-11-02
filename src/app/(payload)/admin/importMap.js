@@ -3,7 +3,6 @@ import { LocalizedField as LocalizedField_142b8cab4d4a148200b7a103e31835b8 } fro
 import { MediaPreview as MediaPreview_7953a626217c93eced8422b949c6af27 } from '../../../../src/cms/admin/MediaPreview'
 import { GeorgianOnly as GeorgianOnly_142b8cab4d4a148200b7a103e31835b8 } from '../../../../src/cms/admin/BilingualFields'
 import { FileSizeCell as FileSizeCell_5e0d912ab61022778cae5c181b85e277 } from '../../../../src/cms/admin/Cells'
-import { MediaBatchImages as MediaBatchImages_0520dbaa066397b743a1fc315109acfd } from '../../../../src/cms/admin/BatchImages'
 import { PublishAction as PublishAction_c5f6242a97fcac03405a61441e94be0a } from '../../../../src/cms/admin/Actions'
 import { SaveAction as SaveAction_c5f6242a97fcac03405a61441e94be0a } from '../../../../src/cms/admin/Actions'
 import { SaveDraftAction as SaveDraftAction_c5f6242a97fcac03405a61441e94be0a } from '../../../../src/cms/admin/Actions'
@@ -13,6 +12,7 @@ import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { LexicalDiffComponent as LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { BlocksFeatureClient as BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { GalleryImage as GalleryImage_0520dbaa066397b743a1fc315109acfd } from '../../../../src/cms/admin/BatchImages'
 import { GalleryField as GalleryField_0520dbaa066397b743a1fc315109acfd } from '../../../../src/cms/admin/BatchImages'
 import { GalleryPreview as GalleryPreview_020c2fa2944ee8fe4ca67da2ea66e5c0 } from '../../../../src/cms/editor/Previews'
 import { BlockEditor as BlockEditor_617a0d50a695a8db8515a8fff5f60cf4 } from '../../../../src/cms/editor/BlockEditor'
@@ -65,7 +65,6 @@ export const importMap = {
   "/src/cms/admin/MediaPreview#MediaPreview": MediaPreview_7953a626217c93eced8422b949c6af27,
   "/src/cms/admin/BilingualFields#GeorgianOnly": GeorgianOnly_142b8cab4d4a148200b7a103e31835b8,
   "/src/cms/admin/Cells#FileSizeCell": FileSizeCell_5e0d912ab61022778cae5c181b85e277,
-  "/src/cms/admin/BatchImages#MediaBatchImages": MediaBatchImages_0520dbaa066397b743a1fc315109acfd,
   "/src/cms/admin/Actions#PublishAction": PublishAction_c5f6242a97fcac03405a61441e94be0a,
   "/src/cms/admin/Actions#SaveAction": SaveAction_c5f6242a97fcac03405a61441e94be0a,
   "/src/cms/admin/Actions#SaveDraftAction": SaveDraftAction_c5f6242a97fcac03405a61441e94be0a,
@@ -75,6 +74,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#LexicalDiffComponent": LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/client#BlocksFeatureClient": BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "/src/cms/admin/BatchImages#GalleryImage": GalleryImage_0520dbaa066397b743a1fc315109acfd,
   "/src/cms/admin/BatchImages#GalleryField": GalleryField_0520dbaa066397b743a1fc315109acfd,
   "/src/cms/editor/Previews#GalleryPreview": GalleryPreview_020c2fa2944ee8fe4ca67da2ea66e5c0,
   "/src/cms/editor/BlockEditor#BlockEditor": BlockEditor_617a0d50a695a8db8515a8fff5f60cf4,

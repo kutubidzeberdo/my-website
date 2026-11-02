@@ -47,8 +47,7 @@ export const Media: CollectionConfig={...managed('media','ფოტო','მე�
  }],beforeDelete:[protectSharedMedia],beforeOperation:[async ({req,operation,args})=>{
   if(!['create','update'].includes(operation)||!req.file)return;
   if(!req.context.cmsImport&&!permitted(req.user,'media',operation as 'create'|'update'))throw new APIError('თქვენ არ გაქვთ ფოტოს ატვირთვის უფლება',403);
-  if(req.file.size>10*1024*1024)throw new APIError('ფოტო არ უნდა აღემატებოდეს 10 MB-ს',400);
-  try{const meta=await sharp(req.file.data,{limitInputPixels:40_000_000}).metadata();
+  try{const meta=await sharp(req.file.tempFilePath||req.file.data,{limitInputPixels:40_000_000}).metadata();
    const formats:Record<string,string[]>= {'image/jpeg':['jpeg'],'image/png':['png'],'image/webp':['webp'],'image/gif':['gif'],'image/avif':['avif','heif']};
    if(!formats[req.file.mimetype]?.includes(meta.format||''))throw new Error();
    if(!meta.width||!meta.height||meta.width*meta.height>40_000_000)throw new Error();
@@ -69,7 +68,7 @@ Media.fields.push({name:'filesize',type:'number',label:'ზომა',admin:{hid
 
 for(const collection of [News,Projects])collection.admin={...collection.admin,components:{...collection.admin?.components,edit:{PublishButton:'/src/cms/admin/Actions#PublishAction',UnpublishButton:'/src/cms/admin/Actions#UnpublishAction'}}};
 Projects.admin!.components={...Projects.admin!.components,views:{list:{Component:'/src/cms/admin/ProjectControls#ProjectList'}}};
-Media.admin={...Media.admin,components:{...Media.admin?.components,beforeList:['/src/cms/admin/BatchImages#MediaBatchImages']},description:'აქ შეგიძლიათ ატვირთოთ, ნახოთ და მართოთ საიტის ფოტოები და სხვა მედია ფაილები. ატვირთული ფაილების გამოყენება შესაძლებელია სიახლეებში, პროექტებში, სლაიდერსა და ფოტოგალერეებში.',defaultColumns:['mediaPreview','title','filename','mimeType','filesize','width','height','updatedAt']};
+Media.admin={...Media.admin,description:'აქ შეგიძლიათ ატვირთოთ, ნახოთ და მართოთ საიტის ფოტოები და სხვა მედია ფაილები. ატვირთული ფაილების გამოყენება შესაძლებელია სიახლეებში, პროექტებში, სლაიდერსა და ფოტოგალერეებში.',defaultColumns:['mediaPreview','title','filename','mimeType','filesize','width','height','updatedAt']};
 Media.fields.push({name:'mediaPreview',type:'ui',label:'ფოტო',admin:{components:{Cell:'/src/cms/admin/MediaPreview#MediaPreview'}}});
 
 for(const collection of [Slides,Testimonials,Statistics])collection.access!.read=({req})=>permitted(req.user,collection.slug as Section,'read')?true:{active:{equals:true}};
